@@ -35,6 +35,40 @@ add_executable(${PROJECT_NAME}
     ${SRC_DIR}/main.cpp
     ${SRC_FILES}
     ${HEADER_FILES}
+        include/GameObject.hpp
+        include/Plants.hpp
+        include/SceneManager.hpp
+        src/SceneManager.cpp
+        include/Grid.hpp
+        include/SeedPacket.hpp
+        include/SeedPacketManager.hpp
+        include/Sun.hpp
+        include/SunManager.hpp
+        include/PotatoMine.hpp
+        include/CherryBomb.hpp
+        include/Peashooter.hpp
+        include/Sunflower.hpp
+        include/Wallnut.hpp
+        include/Zombies.hpp
+        include/NormalZombie.hpp
+        include/Pea.hpp
+        include/Config.hpp
+        include/AllPlants.hpp
+        include/AllZombies.hpp
+        include/LevelLoader.hpp
+        include/PlantFactory.hpp
+        include/LawnMower.hpp
+        include/FlagZombie.hpp
+        include/ConeHeadZombie.hpp
+        include/PlantType.hpp
+        include/AbilityInterfaces.hpp
+        include/GameWorld.hpp
+        include/CombatSystem.hpp
+        include/LevelController.hpp
+        src/LevelLoader.cpp
+        src/PlantFactory.cpp
+        include/RenderSystem.hpp
+        include/UIController.hpp
 )
 
 if(MSVC)

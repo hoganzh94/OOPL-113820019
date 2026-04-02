@@ -4,6 +4,8 @@ set(SRC_FILES
 
 set(INCLUDE_FILES
     App.hpp
+    GameObject.hpp
+    Plants.hpp
 )
 
 set(TEST_FILES
