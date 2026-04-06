@@ -28,7 +28,7 @@ public:
             m_SunTimer = 0.0f;
             SetDrawable(m_IdleAnimation);
         }
-        else if (m_SunTimer >= 23.0f && m_SunTimer < 23.1f) {
+        else if (m_SunTimer >= 20.0f && m_SunTimer < 20.1f) {
             SetDrawable(m_ProducingDrawable);
         }
     }

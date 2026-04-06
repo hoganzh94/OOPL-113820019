@@ -83,6 +83,7 @@ void SceneManager::Update() {
 
     if (m_SunManager) {
         m_SunManager->Update();
+        m_UIController.UpdateSunCount(m_SunManager->GetSunCount(), m_SunTextDrawable);
     }
     m_UIController.UpdateSunCount(m_SunManager->GetSunCount(), m_SunTextDrawable);
     // 1. 系統更新
@@ -113,7 +114,12 @@ void SceneManager::Update() {
 
 void SceneManager::EnterLevel(int level) {
     LevelLoader::Initialize();
-    ClearAll();
+    ClearAll(); // 清除上一關殘留
+
+    if (m_SunManager) {
+        m_SunManager->Reset();           // 先清空舊太陽、重設基本狀態
+        m_SunManager->InitializeLevel(level); // 再根據關卡設定 150 或 50
+    }
 
     m_Phase = LevelPhase::DAY_LEVEL;
     m_LevelController.Initialize(level, m_Grid);
@@ -127,19 +133,21 @@ void SceneManager::EnterLevel(int level) {
 
     m_Grid->Initialize(info.gridCoords);
 
-    // 註冊渲染 (修復 Cannot resolve symbol m_ProgressBarBG)
+    // 註冊渲染
     m_Renderer.AddChild(m_GameSceneBG);
     m_Renderer.AddChild(m_Lawn);
     m_Renderer.AddChild(m_SunTextObj);
     m_Renderer.AddChild(m_ProgressBarBG);
     m_Renderer.AddChild(m_ProgressBarFill);
 
-    m_PacketManager->SetVisibleStatus(true);
-    for (auto& p : m_PacketManager->GetPackets()) m_Renderer.AddChild(p);
+    // --- 關鍵修正 B：卡槽初始化 ---
+    if (m_PacketManager) {
+        m_PacketManager->Initialize(); // 確保冷卻狀態重置
+        m_PacketManager->SetVisibleStatus(true);
+        for (auto& p : m_PacketManager->GetPackets()) m_Renderer.AddChild(p);
+    }
 
-    if (m_SunManager) m_SunManager->Reset();
-
-    // 建立割草機 (修復 Cannot resolve symbol m_Mowers，改用 m_World)
+    // 建立割草機
     int rowCount = static_cast<int>(info.gridCoords.size());
     for (int i = 0; i < rowCount; ++i) {
         if (!info.gridCoords[i].empty()) {

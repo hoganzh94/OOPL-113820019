@@ -7,7 +7,7 @@ class FlagZombie : public NormalZombie {
 public:
     // 旗幟殭屍血量與普通一樣，但速度稍微快一點 (例如 40.0f)
     FlagZombie(glm::vec2 pos) : NormalZombie(pos) {
-        m_Speed = 40.0f;
+        m_Speed = 30.0f;
         m_Hp = 200;
         m_MaxHp = 200;
     }

@@ -23,6 +23,8 @@ public:
     void EnterLevel(int level);
     void Update();
     void AddPlant(PlantType type, glm::vec2 worldPos);
+    GameWorld& GetWorld() { return m_World; }
+    [[nodiscard]] const GameWorld& GetWorld() const { return m_World; }
 
     [[nodiscard]] LevelPhase GetCurrentPhase() const { return m_Phase; }
     [[nodiscard]] std::shared_ptr<Grid> GetGrid() const { return m_Grid; }

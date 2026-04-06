@@ -14,7 +14,7 @@ public:
     void Update() {
         // --- 1. 自然掉落邏輯 (確保計時器運作) ---
         m_SpawnTimer += Util::Time::GetDeltaTime();
-        if (m_SpawnTimer >= 10.0f) {
+        if (m_SpawnTimer >= 5.0f) {
             SpawnSkySun();
             m_SpawnTimer = 0.0f;
         }
@@ -58,18 +58,33 @@ public:
 
     void Reset() {
         ClearSunsFromRenderer();
-        m_SunCount = 50;
         m_SpawnTimer = 0.0f;
     }
 
+    void InitializeLevel(int level) {
+        m_SunCount = (level == 1) ? 150 : 50;
+        // 注意：這裡不呼叫 UpdateText，因為數據與顯示是分離的
+    }
+
+    // 檢查陽光是否足夠
+    bool CanAfford(int cost) const {
+        return m_SunCount >= cost;
+    }
+
+    // 扣除陽光
+    void ConsumeSun(int cost) {
+        m_SunCount -= cost;
+    }
+
+    // 取得當前陽光數量
     int GetSunCount() const { return m_SunCount; }
-    void SpendSun(int amount) { m_SunCount -= amount; }
+
 
 private:
     Util::Renderer& m_Renderer;
     std::vector<std::shared_ptr<Sun>> m_Suns;
     float m_SpawnTimer = 0.0f;
-    int m_SunCount = 50;
+    int m_SunCount = 0;
 };
 
 #endif
