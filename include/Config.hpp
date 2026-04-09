@@ -45,7 +45,7 @@ namespace Config {
 
     // --- 遊戲邏輯 ---
     inline constexpr float SUN_PRODUCE_TIME = 20.0f; // 向日葵產陽光間隔
-    inline constexpr float ZOMBIE_SPAWN_INTERVAL = 10.0f; // 殭屍生成間隔
+    //inline constexpr float ZOMBIE_SPAWN_INTERVAL = 10.0f; // 殭屍生成間隔
 }
 
 #endif
