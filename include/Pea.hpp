@@ -12,11 +12,11 @@ public:
         m_Transform.translation = pos;
         m_Transform.scale = {2.0f, 2.0f};
         SetZIndex(13.0f);
-        SetDrawable(std::make_shared<Util::Image>("C:/Users/user/ptsd-template/Resources/Image/Plant/Peashooter/Pea/Peashooter - Pea 1.png"));
+        SetDrawable(std::make_shared<Util::Image>("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Peashooter/Pea/Peashooter - Pea 1.png"));
     }
 
     // 必須是 Update() 才能被 GameWorld 呼叫
-    void Update() {
+    virtual void Update() {
         if (m_IsDead) return;
 
         if (!m_IsExploding) {
@@ -29,9 +29,9 @@ public:
             // 爆炸動畫邏輯
             m_ExplodeTimer += Util::Time::GetDeltaTime();
             if (m_ExplodeTimer >= 0.05f && m_ExplodeTimer < 0.1f) {
-                SetDrawable(std::make_shared<Util::Image>("C:/Users/user/ptsd-template/Resources/Image/Plant/Peashooter/Pea/Peashooter - Pea 2.png"));
+                SetDrawable(std::make_shared<Util::Image>("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Peashooter/Pea/Peashooter - Pea 2.png"));
             } else if (m_ExplodeTimer >= 0.1f) {
-                SetDrawable(std::make_shared<Util::Image>("C:/Users/user/ptsd-template/Resources/Image/Plant/Peashooter/Pea/Peashooter - Pea 3.png"));
+                SetDrawable(std::make_shared<Util::Image>("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Peashooter/Pea/Peashooter - Pea 3.png"));
                 if (m_ExplodeTimer >= 0.15f) m_IsDead = true;
             }
         }
@@ -47,7 +47,7 @@ public:
     bool IsDead() const { return m_IsDead; }
     bool IsExploding() const { return m_IsExploding; }
 
-private:
+protected:
     float m_ExplodeTimer = 0.0f;
     bool m_IsExploding;
     bool m_IsDead;

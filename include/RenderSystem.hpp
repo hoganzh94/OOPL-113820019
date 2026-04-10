@@ -8,8 +8,6 @@ class RenderSystem {
 public:
     static void Update(GameWorld& world, Util::Renderer& renderer) {
         // 渲染系統負責同步邏輯世界與渲染層
-        // 這裡可以處理 UI 更新、背景繪製等
-        // 目前我們先確保所有物件都在渲染器的繪製清單中
     }
     
     // 當世界產生新物件時，由系統負責加入渲染器

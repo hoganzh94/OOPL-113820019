@@ -8,6 +8,7 @@ namespace Config {
     inline constexpr int WALLNUT_HP    = 2000;
     inline constexpr int POTATOMINE_HP = 100;
     inline constexpr int CHERRYBOMB_HP = 9999;
+    inline constexpr int SNOWPEA_HP = 100;
 
     // --- 冷卻時間 (秒) ---
     inline constexpr float PEASHOOTER_COOLDOWN = 5.0f;
@@ -15,6 +16,7 @@ namespace Config {
     inline constexpr float CHERRYBOMB_COOLDOWN = 40.0f;
     inline constexpr float WALLNUT_COOLDOWN    = 25.0f;
     inline constexpr float POTATOMINE_COOLDOWN = 40.0f;
+    inline constexpr float SNOWPEA_COOLDOWN = 5.0f;
 
     // --- 價格 ---
     inline constexpr int PEASHOOTER_COST = 100;
@@ -22,6 +24,7 @@ namespace Config {
     inline constexpr int CHERRYBOMB_COST = 150;
     inline constexpr int WALLNUT_COST    = 50;
     inline constexpr int POTATOMINE_COST = 25;
+    inline constexpr int SNOWPEA_COST = 175;
 
     // --- 殭屍數值 ---
     inline constexpr int NORMAL_ZOMBIE_HP = 100;
@@ -42,6 +45,8 @@ namespace Config {
     inline constexpr float PEA_SPEED = 500.0f;
     inline constexpr int CHERRYBOMB_DAMAGE = 1800;
     inline constexpr float CHERRYBOMB_RANGE = 150.0f;
+    inline constexpr float SLOW_DURATION = 5.0f;
+    inline constexpr float SLOW_FACTOR = 0.5f;
 
     // --- 遊戲邏輯 ---
     inline constexpr float SUN_PRODUCE_TIME = 20.0f; // 向日葵產陽光間隔

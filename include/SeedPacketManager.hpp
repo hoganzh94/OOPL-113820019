@@ -13,11 +13,12 @@ public:
         m_SelectedType = PlantType::NONE;
 
         // 傳入對應的冷卻時間
-        m_Packets.push_back(std::make_shared<SeedPacket>(PlantType::PEASHOOTER, "C:/Users/user/ptsd-template/Resources/Image/Plant/Peashooter/Peashooter - Image.png", Config::PEASHOOTER_COOLDOWN));
-        m_Packets.push_back(std::make_shared<SeedPacket>(PlantType::SUNFLOWER,  "C:/Users/user/ptsd-template/Resources/Image/Plant/Sunflower/Sunflower - Image.png",   Config::SUNFLOWER_COOLDOWN));
-        m_Packets.push_back(std::make_shared<SeedPacket>(PlantType::CHERRYBOMB, "C:/Users/user/ptsd-template/Resources/Image/Plant/Cherrybomb/Cherry Bomb - Image.png",Config::CHERRYBOMB_COOLDOWN));
-        m_Packets.push_back(std::make_shared<SeedPacket>(PlantType::WALLNUT,    "C:/Users/user/ptsd-template/Resources/Image/Plant/Wallnut/Wall-Nut - Image.png",     Config::WALLNUT_COOLDOWN));
-        m_Packets.push_back(std::make_shared<SeedPacket>(PlantType::POTATOMINE, "C:/Users/user/ptsd-template/Resources/Image/Plant/Potato mine/Potato Mine - Image.png", Config::POTATOMINE_COOLDOWN));
+        m_Packets.push_back(std::make_shared<SeedPacket>(PlantType::PEASHOOTER, "C:/Users/user/OOPL-113820019/Resources/Image/Plant/Peashooter/Peashooter - Image.png", Config::PEASHOOTER_COOLDOWN));
+        m_Packets.push_back(std::make_shared<SeedPacket>(PlantType::SUNFLOWER, "C:/Users/user/OOPL-113820019/Resources/Image/Plant/Sunflower/Sunflower - Image.png",   Config::SUNFLOWER_COOLDOWN));
+        m_Packets.push_back(std::make_shared<SeedPacket>(PlantType::CHERRYBOMB, "C:/Users/user/OOPL-113820019/Resources/Image/Plant/Cherrybomb/Cherry Bomb - Image.png",Config::CHERRYBOMB_COOLDOWN));
+        m_Packets.push_back(std::make_shared<SeedPacket>(PlantType::WALLNUT, "C:/Users/user/OOPL-113820019/Resources/Image/Plant/Wallnut/Wall-Nut - Image.png",     Config::WALLNUT_COOLDOWN));
+        m_Packets.push_back(std::make_shared<SeedPacket>(PlantType::POTATOMINE, "C:/Users/user/OOPL-113820019/Resources/Image/Plant/Potato mine/Potato Mine - Image.png", Config::POTATOMINE_COOLDOWN));
+        m_Packets.push_back(std::make_shared<SeedPacket>(PlantType::SNOWPEA, "C:/Users/user/OOPL-113820019/Resources/Image/Plant/Snow Pea/Snow Pea - Image.png", Config::SNOWPEA_COOLDOWN));
 
         float startY = 250.0f;
         for (auto& p : m_Packets) {

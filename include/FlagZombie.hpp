@@ -14,7 +14,7 @@ public:
 
 protected:
     // 改寫動畫路徑，指向 Flag Zombie 的資料夾
-    void UpdateAnimation(bool isHurt) override {
+    void UpdateAnimation(bool isHurt, bool isSlowed) override {
         int currentAnimState = 0;
         if (m_State == State::WALKING) {
             currentAnimState = isHurt ? 1 : 0;
@@ -24,7 +24,7 @@ protected:
 
         if (currentAnimState != m_LastAnimState) {
             std::vector<std::string> paths;
-            std::string base = "C:/Users/user/ptsd-template/Resources/Image/Zombie/Flag Zombie/";
+            std::string base = "C:/Users/user/OOPL-113820019/Resources/Image/Zombie/Flag Zombie/";
             std::string folder;
             int frames = 0;
 

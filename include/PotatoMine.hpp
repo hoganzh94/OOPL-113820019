@@ -13,7 +13,7 @@ public:
 
     PotatoMine(glm::vec2 pos) : Plant(PlantType::POTATOMINE, pos, Config::POTATOMINE_HP) {
         m_State = State::UNDERGROUND;
-        SetDrawable(std::make_shared<Util::Image>("C:/Users/user/ptsd-template/Resources/Image/Plant/Potato mine/Pop up/Potato Mine - Pop up 1.png"));
+        SetDrawable(std::make_shared<Util::Image>("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Potato mine/Pop up/Potato Mine - Pop up 1.png"));
     }
 
     void Update() override {
@@ -28,8 +28,8 @@ public:
 
             // 載入 Pop up 動畫 (不循環播放)
             std::vector<std::string> popUpPaths;
-            popUpPaths.push_back("C:/Users/user/ptsd-template/Resources/Image/Plant/Potato mine/Pop up/Potato Mine - Pop up 2.png");
-            popUpPaths.push_back("C:/Users/user/ptsd-template/Resources/Image/Plant/Potato mine/Pop up/Potato Mine - Pop up 3.png");
+            popUpPaths.push_back("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Potato mine/Pop up/Potato Mine - Pop up 2.png");
+            popUpPaths.push_back("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Potato mine/Pop up/Potato Mine - Pop up 3.png");
             SetDrawable(std::make_shared<Util::Animation>(popUpPaths, false, 200, true));
             m_Timer = 0.0f; // 重置計時器
         }
@@ -39,8 +39,8 @@ public:
 
             // 載入 Idle 動畫 (循環播放)
             std::vector<std::string> idlePaths;
-            idlePaths.push_back("C:/Users/user/ptsd-template/Resources/Image/Plant/Potato mine/Idle/Potato mine - Idle 1.png");
-            idlePaths.push_back("C:/Users/user/ptsd-template/Resources/Image/Plant/Potato mine/Idle/Potato mine - Idle 2.png");
+            idlePaths.push_back("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Potato mine/Idle/Potato mine - Idle 1.png");
+            idlePaths.push_back("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Potato mine/Idle/Potato mine - Idle 2.png");
             SetDrawable(std::make_shared<Util::Animation>(idlePaths, true, 200, true));
             m_Timer = 0.0f;
         }
@@ -59,7 +59,7 @@ public:
             m_Timer = 0.0f;
 
             // 視覺：換成爆炸圖
-            SetDrawable(std::make_shared<Util::Image>("C:/Users/user/ptsd-template/Resources/Image/Plant/Potato mine/Potato Mine - Explosion.png"));
+            SetDrawable(std::make_shared<Util::Image>("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Potato mine/Potato Mine - Explosion.png"));
             m_Transform.scale = {3.5f, 3.5f}; // 爆炸圖片通常較大
 
             // 效果：對該殭屍造成致命傷害

@@ -76,6 +76,11 @@ public:
 
                 if (dy < 40.0f && dx < 30.0f) {
                     z->TakeDamage(Config::PEA_DAMAGE);
+                    if (auto icePea = std::dynamic_pointer_cast<SnowPeaBullet>(pea))
+                    {
+                        z->SlowDown();
+                    }
+
                     pea->Hit();
                     break;
                 }

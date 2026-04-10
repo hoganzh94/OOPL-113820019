@@ -106,21 +106,26 @@ private:
         }
         // 第二波觸發 (若該關卡有 2 次一大波)
         else if (m_LevelData.hugeWaveCount == 2 && !m_Wave2Triggered &&
-                 m_Wave1Triggered && remainingToSpawn <= m_LevelData.wave2Zombies) {
+                 m_Wave1Triggered && remainingToSpawn <= m_LevelData.wave2Zombies)
+        {
             m_Wave2Triggered = true;
             TriggerHugeWave(world, renderer, m_LevelData.wave2Zombies);
-                 }
+        }
     }
 
     void TriggerHugeWave(GameWorld& world, Util::Renderer& renderer, int count) {
         LOG_INFO("A HUGE WAVE OF ZOMBIES IS COMING!");
 
-        // 1. 生成一個旗幟殭屍作為領隊 (你的註解要求)
+        // 1. 生成一個旗幟殭屍作為領隊
         SpawnZombie(world, renderer, true);
 
-        // 2. 生成其餘的一大波殭屍
-        for (int i = 0; i < count - 1; ++i) {
+        int currentPoints = 0;
+        int targetPoints = count - 1;
+        while (currentPoints < targetPoints)
+        {
+            int before = m_SpawnedCount;
             SpawnZombie(world, renderer, false);
+            currentPoints += (m_SpawnedCount - before);
         }
     }
 
@@ -131,16 +136,26 @@ private:
         glm::vec2 spawnPos(500.0f, spawnY + 10.0f);
 
         std::shared_ptr<Zombie> newZombie = nullptr;
+        int points = 0;
 
-        // 根據關卡與進度決定殭屍種類 (OOP 邏輯封裝)
-        if (forceFlag) {
+        if (forceFlag && m_CurrentLevel > 1)
+        {
             newZombie = std::make_shared<FlagZombie>(spawnPos);
-        } else {
-            // 隨機決定是路障還是普通 (Level 3 以上才有路障)
-            if (m_CurrentLevel >= 3 && (rand() % 100 < 25)) {
+            points = 1;
+        }else if (m_SpawnedCount < 5)
+        {
+            newZombie = std::make_shared<NormalZombie>(spawnPos);
+            points = 1;
+        }else
+        {
+            if (m_CurrentLevel >= 3 && (rand()%100 < 25))
+            {
                 newZombie = std::make_shared<ConeHeadZombie>(spawnPos);
-            } else {
+                points = 2;
+            }else
+            {
                 newZombie = std::make_shared<NormalZombie>(spawnPos);
+                points = 1;
             }
         }
 

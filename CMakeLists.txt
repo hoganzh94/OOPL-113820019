@@ -69,6 +69,8 @@ add_executable(${PROJECT_NAME}
         src/PlantFactory.cpp
         include/RenderSystem.hpp
         include/UIController.hpp
+        include/SnowPea.hpp
+        include/SnowPeaBullet.hpp
 )
 
 if(MSVC)

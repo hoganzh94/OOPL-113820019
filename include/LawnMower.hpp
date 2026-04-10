@@ -11,7 +11,7 @@ public:
     enum class State { IDLE, ACTIVATED, DEAD };
 
     LawnMower(glm::vec2 pos) : m_State(State::IDLE) {
-        SetDrawable(std::make_shared<Util::Image>("C:/Users/user/ptsd-template/Resources/Image/Scene/Levels - weeding.png"));
+        SetDrawable(std::make_shared<Util::Image>("C:/Users/user/OOPL-113820019/Resources/Image/Scene/Levels - weeding.png"));
         m_Transform.translation = pos;
         m_Transform.scale = {3.5f, 3.5f};
         SetZIndex(17.0f); // 介於草地 (10) 與植物 (11) 之間

@@ -14,12 +14,12 @@ public:
     Peashooter(glm::vec2 pos) : Plant(PlantType::PEASHOOTER, pos, Config::PEASHOOTER_HP) {
         std::vector<std::string> idlePaths;
         for (int i = 1; i <= 8; ++i)
-            idlePaths.push_back("C:/Users/user/ptsd-template/Resources/Image/Plant/Peashooter/Idle/Peashooter - Idle " + std::to_string(i) + ".png");
+            idlePaths.push_back("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Peashooter/Idle/Peashooter - Idle " + std::to_string(i) + ".png");
         m_IdleAnim = std::make_shared<Util::Animation>(idlePaths, true, 120, true);
 
         std::vector<std::string> attackPaths;
         for (int i = 1; i <= 3; ++i)
-            attackPaths.push_back("C:/Users/user/ptsd-template/Resources/Image/Plant/Peashooter/Attack/Peashooter - Attack " + std::to_string(i) + ".png");
+            attackPaths.push_back("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Peashooter/Attack/Peashooter - Attack " + std::to_string(i) + ".png");
 
         m_AttackAnim = std::make_shared<Util::Animation>(attackPaths, false, 100, true);
         SetDrawable(m_IdleAnim);

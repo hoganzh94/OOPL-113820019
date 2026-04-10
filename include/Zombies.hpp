@@ -11,6 +11,8 @@ class Zombie : public Util::GameObject {
 public:
     enum class State { WALKING, EATING };
 
+    void SlowDown(){ m_SlowTimer = Config::SLOW_DURATION; }
+
     Zombie(int hp, float speed, glm::vec2 pos)
         : m_Hp(hp), m_MaxHp(hp), m_Speed(speed) {
         m_Transform.translation = pos;
@@ -25,10 +27,19 @@ public:
     [[nodiscard]] float GetY() const { return m_Transform.translation.y; }
 
     virtual void Update()  {
+        float currentSpeed = m_Speed;
+        bool isSlowed = m_SlowTimer > 0;
+
+        if (isSlowed)
+        {
+            m_SlowTimer -= Util::Time::GetDeltaTime();
+            currentSpeed *= Config::SLOW_FACTOR;
+        }
+
         bool isHurt = (static_cast<float>(m_Hp) / m_MaxHp) <= 0.4f;
 
         if (m_State == State::WALKING) {
-            m_Transform.translation.x -= m_Speed * Util::Time::GetDeltaTime();
+            m_Transform.translation.x -= currentSpeed * Util::Time::GetDeltaTime();
             m_EatTimer = 0.0f;
         }
         else if (m_State == State::EATING && m_TargetPlant) {
@@ -43,7 +54,7 @@ public:
                 SetEating(false);
             }
         }
-        UpdateAnimation(isHurt);
+        UpdateAnimation(isHurt, isSlowed);
     }
 
     void SetTargetPlant(std::shared_ptr<Plant> plant) {
@@ -64,13 +75,14 @@ public:
     bool IsDead() const { return m_Hp <= 0; }
 
 protected:
-    virtual void UpdateAnimation(bool isHurt) = 0;
+    virtual void UpdateAnimation(bool isHurt, bool isSlowed) = 0;
     int m_Hp, m_MaxHp;
     float m_Speed;
     State m_State = State::WALKING;
     float m_EatTimer = 0.0f;
     std::shared_ptr<Plant> m_TargetPlant = nullptr;
     int m_LastAnimState = -1;
+    float m_SlowTimer = 0.0f;
 };
 
 #endif

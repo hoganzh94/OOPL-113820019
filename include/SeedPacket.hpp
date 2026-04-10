@@ -31,6 +31,7 @@ public:
             case PlantType::CHERRYBOMB: folderName = "Cherrybomb"; fileNamePart = "Cherry Bomb"; break;
             case PlantType::WALLNUT:    folderName = "Wallnut";    fileNamePart = "Wall-Nut";    break; // 這裡修正為 Wall-Nut
             case PlantType::POTATOMINE: folderName = "Potato mine"; fileNamePart = "Potato Mine"; break;
+            case PlantType::SNOWPEA:    folderName = "Snow Pea";     fileNamePart = "Snow Pea"; break;
             default: folderName = "Peashooter"; fileNamePart = "Peashooter"; break;
         }
 

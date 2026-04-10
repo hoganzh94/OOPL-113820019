@@ -23,6 +23,9 @@ std::shared_ptr<Plant> PlantFactory::CreatePlant(
     case PlantType::POTATOMINE:
         return std::make_shared<PotatoMine>(pos);
 
+    case PlantType::SNOWPEA:
+        return std::make_shared<SnowPea>(pos);
+
     default:
         return nullptr;
     }

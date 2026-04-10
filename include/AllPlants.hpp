@@ -6,5 +6,6 @@
 #include "CherryBomb.hpp"
 #include "Wallnut.hpp"
 #include "PotatoMine.hpp"
+#include "SnowPea.hpp"
 
 #endif

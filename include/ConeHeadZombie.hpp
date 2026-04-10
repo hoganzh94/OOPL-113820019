@@ -29,14 +29,14 @@ public:
             NormalZombie::TakeDamage(damage);
         }
         // 每次受傷強制檢查一次動畫切換
-        UpdateAnimation(m_HurtTimer > 0);
+        UpdateAnimation(m_HurtTimer > 0, m_SlowTimer > 0);
     }
 
     void Update() override {
         // 更新受傷計時器，時間到就切換回正常動畫
         if (m_HurtTimer > 0) {
             m_HurtTimer -= Util::Time::GetDeltaTime();
-            if (m_HurtTimer <= 0) UpdateAnimation(false);
+            if (m_HurtTimer <= 0) UpdateAnimation(false, m_SlowTimer > 0);
         }
         NormalZombie::Update();
     }
@@ -47,9 +47,9 @@ protected:
     float m_HurtTimer = 0.0f;
     int m_LastAnimState = -1;
 
-    void UpdateAnimation(bool isHurt) override {
+    void UpdateAnimation(bool isHurt, bool isSlowed) override {
         if (m_ArmorHp <= 0) {
-            NormalZombie::UpdateAnimation(isHurt);
+            NormalZombie::UpdateAnimation(isHurt, isSlowed);
             return;
         }
 
@@ -66,7 +66,7 @@ protected:
 
         if (combined != m_LastAnimState) {
             std::string actStr = (action == 0) ? "Walk" : "Eat";
-            std::string base = "C:/Users/user/ptsd-template/Resources/Image/Zombie/ConeHead Zombie/";
+            std::string base = "C:/Users/user/OOPL-113820019/Resources/Image/Zombie/ConeHead Zombie/";
 
             // 注意：請確認資料夾名稱是否完全匹配 "Walk1", "Walk2", "Walk3"
             std::string pathPrefix = base + actStr + std::to_string(armorStage) +

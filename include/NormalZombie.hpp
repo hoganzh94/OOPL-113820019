@@ -9,7 +9,7 @@ public:
     NormalZombie(glm::vec2 pos) : Zombie(Config::NORMAL_ZOMBIE_HP, Config::ZOMBIE_WALK_SPEED, pos) {} // HP: 200, Speed: 30
 
 protected:
-    void UpdateAnimation(bool isHurt) override {
+    void UpdateAnimation(bool isHurt, bool isSlowed) override {
         // 狀態組合編號：0:正常Walk, 1:負傷Walk, 2:正常Eat, 3:負傷Eat
         int currentAnimState = 0;
         if (m_State == State::WALKING) {
@@ -21,7 +21,7 @@ protected:
         // 只有狀態改變時才更換 Animation 物件
         if (currentAnimState != m_LastAnimState) {
             std::vector<std::string> paths;
-            std::string base = "C:/Users/user/ptsd-template/Resources/Image/Zombie/Normal Zombie/";
+            std::string base = "C:/Users/user/OOPL-113820019/Resources/Image/Zombie/Normal Zombie/";
             std::string folder;
             int frames = 0;
 
