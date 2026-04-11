@@ -7,5 +7,6 @@
 #include "Wallnut.hpp"
 #include "PotatoMine.hpp"
 #include "SnowPea.hpp"
+#include "Chomper.hpp"
 
 #endif

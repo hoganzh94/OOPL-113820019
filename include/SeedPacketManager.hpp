@@ -19,6 +19,7 @@ public:
         m_Packets.push_back(std::make_shared<SeedPacket>(PlantType::WALLNUT, "C:/Users/user/OOPL-113820019/Resources/Image/Plant/Wallnut/Wall-Nut - Image.png",     Config::WALLNUT_COOLDOWN));
         m_Packets.push_back(std::make_shared<SeedPacket>(PlantType::POTATOMINE, "C:/Users/user/OOPL-113820019/Resources/Image/Plant/Potato mine/Potato Mine - Image.png", Config::POTATOMINE_COOLDOWN));
         m_Packets.push_back(std::make_shared<SeedPacket>(PlantType::SNOWPEA, "C:/Users/user/OOPL-113820019/Resources/Image/Plant/Snow Pea/Snow Pea - Image.png", Config::SNOWPEA_COOLDOWN));
+        m_Packets.push_back(std::make_shared<SeedPacket>(PlantType::CHOMPER, "C:/Users/user/OOPL-113820019/Resources/Image/Plant/Chomper/Chomper - Image.png", Config::CHOMPER_COOLDOWN));
 
         float startY = 250.0f;
         for (auto& p : m_Packets) {

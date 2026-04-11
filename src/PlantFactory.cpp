@@ -1,5 +1,5 @@
 #include "PlantFactory.hpp"
-#include "AllPlants.hpp" // 引入具體植物類別 (Peashooter, Sunflower...)
+#include "AllPlants.hpp"
 #include "SunManager.hpp"
 
 std::shared_ptr<Plant> PlantFactory::CreatePlant(
@@ -25,6 +25,9 @@ std::shared_ptr<Plant> PlantFactory::CreatePlant(
 
     case PlantType::SNOWPEA:
         return std::make_shared<SnowPea>(pos);
+
+    case PlantType::CHOMPER:
+        return std::make_shared<Chomper>(pos);
 
     default:
         return nullptr;

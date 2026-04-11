@@ -71,6 +71,7 @@ add_executable(${PROJECT_NAME}
         include/UIController.hpp
         include/SnowPea.hpp
         include/SnowPeaBullet.hpp
+        include/Chomper.hpp
 )
 
 if(MSVC)

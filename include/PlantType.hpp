@@ -8,7 +8,8 @@ enum class PlantType {
     CHERRYBOMB,
     WALLNUT,
     POTATOMINE,
-    SNOWPEA
+    SNOWPEA,
+    CHOMPER
 };
 
 #endif

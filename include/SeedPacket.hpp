@@ -26,12 +26,13 @@ public:
         std::string fileNamePart;
 
         switch(type) {
-            case PlantType::PEASHOOTER: folderName = "Peashooter"; fileNamePart = "Peashooter"; break;
-            case PlantType::SUNFLOWER:  folderName = "Sunflower";  fileNamePart = "Sunflower";  break;
-            case PlantType::CHERRYBOMB: folderName = "Cherrybomb"; fileNamePart = "Cherry Bomb"; break;
-            case PlantType::WALLNUT:    folderName = "Wallnut";    fileNamePart = "Wall-Nut";    break; // 這裡修正為 Wall-Nut
+            case PlantType::PEASHOOTER: folderName = "Peashooter";  fileNamePart = "Peashooter"; break;
+            case PlantType::SUNFLOWER:  folderName = "Sunflower";   fileNamePart = "Sunflower";  break;
+            case PlantType::CHERRYBOMB: folderName = "Cherrybomb";  fileNamePart = "Cherry Bomb"; break;
+            case PlantType::WALLNUT:    folderName = "Wallnut";     fileNamePart = "Wall-Nut";    break;
             case PlantType::POTATOMINE: folderName = "Potato mine"; fileNamePart = "Potato Mine"; break;
-            case PlantType::SNOWPEA:    folderName = "Snow Pea";     fileNamePart = "Snow Pea"; break;
+            case PlantType::SNOWPEA:    folderName = "Snow Pea";    fileNamePart = "Snow Pea"; break;
+            case PlantType::CHOMPER:    folderName = "Chomper";     fileNamePart = "Chomper";  break;
             default: folderName = "Peashooter"; fileNamePart = "Peashooter"; break;
         }
 

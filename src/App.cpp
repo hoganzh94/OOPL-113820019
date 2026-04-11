@@ -19,6 +19,7 @@ int GetPlantCost(PlantType type) {
     case PlantType::WALLNUT:    return Config::WALLNUT_COST;
     case PlantType::POTATOMINE: return Config::POTATOMINE_COST;
     case PlantType::SNOWPEA:    return Config::SNOWPEA_COST;
+    case PlantType::CHOMPER:   return Config::CHOMPER_COST;
     default: return 0;
     }
 }
