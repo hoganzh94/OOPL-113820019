@@ -8,7 +8,7 @@ class SnowPeaBullet : public Pea
 public:
     SnowPeaBullet(glm::vec2 pos) : Pea(pos)
     {
-        SetDrawable(std::make_shared<Util::Image>("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Snow Pea/Pea/Snow Pea - Pea 1.png"));
+        SetDrawable(std::make_shared<Util::Image>(std::string(RESOURCE_DIR) + "/Image/Plant/Snow Pea/Pea/Snow Pea - Pea 1.png"));
     }
 
     bool IsIce() const { return true;}
@@ -27,10 +27,10 @@ public:
 
             // 這裡假設寒冰爆炸有 3 幀，每幀間隔 0.05s
             if (m_ExplodeTimer < 0.05f) {
-                SetDrawable(std::make_shared<Util::Image>("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Snow Pea/Pea/Snow Pea - Pea 2.png"));
+                SetDrawable(std::make_shared<Util::Image>(std::string(RESOURCE_DIR) + "/Image/Plant/Snow Pea/Pea/Snow Pea - Pea 2.png"));
             }
             else if (m_ExplodeTimer < 0.1f) {
-                SetDrawable(std::make_shared<Util::Image>("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Snow Pea/Pea/Snow Pea - Pea 3.png"));
+                SetDrawable(std::make_shared<Util::Image>(std::string(RESOURCE_DIR) + "/Image/Plant/Snow Pea/Pea/Snow Pea - Pea 3.png"));
             }
             else if (m_ExplodeTimer < 0.15f) {
                 // 如果有第 4 幀可以使用，或是直接結束

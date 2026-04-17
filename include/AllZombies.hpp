@@ -4,5 +4,6 @@
 #include "NormalZombie.hpp"
 #include "FlagZombie.hpp"
 #include "ConeHeadZombie.hpp"
+#include "BucketHeadZombie.hpp"
 
 #endif

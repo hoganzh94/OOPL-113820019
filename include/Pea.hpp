@@ -12,7 +12,7 @@ public:
         m_Transform.translation = pos;
         m_Transform.scale = {2.0f, 2.0f};
         SetZIndex(13.0f);
-        SetDrawable(std::make_shared<Util::Image>("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Peashooter/Pea/Peashooter - Pea 1.png"));
+        SetDrawable(std::make_shared<Util::Image>(std::string(RESOURCE_DIR) + "/Image/Plant/Peashooter/Pea/Peashooter - Pea 1.png"));
     }
 
     // 必須是 Update() 才能被 GameWorld 呼叫
@@ -29,9 +29,9 @@ public:
             // 爆炸動畫邏輯
             m_ExplodeTimer += Util::Time::GetDeltaTime();
             if (m_ExplodeTimer >= 0.05f && m_ExplodeTimer < 0.1f) {
-                SetDrawable(std::make_shared<Util::Image>("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Peashooter/Pea/Peashooter - Pea 2.png"));
+                SetDrawable(std::make_shared<Util::Image>(std::string(RESOURCE_DIR) + "/Image/Plant/Peashooter/Pea/Peashooter - Pea 2.png"));
             } else if (m_ExplodeTimer >= 0.1f) {
-                SetDrawable(std::make_shared<Util::Image>("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Peashooter/Pea/Peashooter - Pea 3.png"));
+                SetDrawable(std::make_shared<Util::Image>(std::string(RESOURCE_DIR) + "/Image/Plant/Peashooter/Pea/Peashooter - Pea 3.png"));
                 if (m_ExplodeTimer >= 0.15f) m_IsDead = true;
             }
         }

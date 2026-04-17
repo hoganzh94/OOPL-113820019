@@ -21,7 +21,7 @@ protected:
         // 只有狀態改變時才更換 Animation 物件
         if (currentAnimState != m_LastAnimState) {
             std::vector<std::string> paths;
-            std::string base = "C:/Users/user/OOPL-113820019/Resources/Image/Zombie/Normal Zombie/";
+            std::string base = std::string(RESOURCE_DIR) + "/Image/Zombie/Normal Zombie/";
             std::string folder;
             int frames = 0;
 

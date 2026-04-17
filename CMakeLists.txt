@@ -72,6 +72,7 @@ add_executable(${PROJECT_NAME}
         include/SnowPea.hpp
         include/SnowPeaBullet.hpp
         include/Chomper.hpp
+        include/BucketHeadZombie.hpp
 )
 
 if(MSVC)

@@ -24,10 +24,12 @@ void SceneManager::InitializeResources() {
         return obj;
     };
 
-    m_MenuTopLeft     = loadImage("C:/Users/user/ptsd-template/Resources/Image/Scene/Menu1.png", menuScale, {-offsetX, offsetY});
-    m_MenuTopRight    = loadImage("C:/Users/user/ptsd-template/Resources/Image/Scene/Menu2.png", menuScale, {offsetX, offsetY});
-    m_MenuBottomLeft  = loadImage("C:/Users/user/ptsd-template/Resources/Image/Scene/Menu3.png", menuScale, {-offsetX, -offsetY});
-    m_MenuBottomRight = loadImage("C:/Users/user/ptsd-template/Resources/Image/Scene/Menu4.png", menuScale, {offsetX, -offsetY});
+    std::string base = RESOURCE_DIR;
+
+    m_MenuTopLeft     = loadImage(base + "/Image/Scene/Menu1.png", menuScale, {-offsetX, offsetY});
+    m_MenuTopRight    = loadImage(base + "/Image/Scene/Menu2.png", menuScale, {offsetX, offsetY});
+    m_MenuBottomLeft  = loadImage(base + "/Image/Scene/Menu3.png", menuScale, {-offsetX, -offsetY});
+    m_MenuBottomRight = loadImage(base + "/Image/Scene/Menu4.png", menuScale, {offsetX, -offsetY});
 
     // --- 遊戲背景 ---
     m_GameSceneBG = std::make_shared<Util::GameObject>();
@@ -39,35 +41,35 @@ void SceneManager::InitializeResources() {
     m_SunManager = std::make_shared<SunManager>(m_Renderer);
 
     m_SunTextObj = std::make_shared<Util::GameObject>();
-    m_SunTextDrawable = std::make_shared<Util::Text>("C:/Users/user/ptsd-template/Resources/Smile Delight (Demo_Font).otf", 30, "50");
+    m_SunTextDrawable = std::make_shared<Util::Text>(base + "/Smile Delight (Demo_Font).otf", 30, "50");
     m_SunTextObj->SetDrawable(m_SunTextDrawable);
     m_SunTextObj->m_Transform.translation = {500.0f, 320.0f};
     m_SunTextObj->SetZIndex(12.0f);
 
     // --- 狀態物件 ---
     m_GameOver = std::make_shared<Util::GameObject>();
-    m_GameOver->SetDrawable(std::make_shared<Util::Image>("C:/Users/user/ptsd-template/Resources/Image/Scene/Game Over Scene.png"));
+    m_GameOver->SetDrawable(std::make_shared<Util::Image>(base + "/Image/Scene/Game Over Scene.png"));
     m_GameOver->SetZIndex(50.0f);
 
     m_ProgressBarBG = std::make_shared<Util::GameObject>();
-    m_ProgressBarBG->SetDrawable(std::make_shared<Util::Image>("C:/Users/user/ptsd-template/Resources/Image/Scene/Progress Bar - Bar.png"));
+    m_ProgressBarBG->SetDrawable(std::make_shared<Util::Image>(base + "/Image/Scene/Progress Bar - Bar.png"));
     m_ProgressBarBG->m_Transform.translation = {-450.0f, -320.0f}; // 底部中心
     m_ProgressBarBG->SetZIndex(18.0f);
 
     m_ProgressBarFill = std::make_shared<Util::GameObject>();
     // 這裡的圖片如果是那片「小葉子」或「進度頭」
-    m_ProgressBarFill->SetDrawable(std::make_shared<Util::Image>("C:/Users/user/ptsd-template/Resources/Image/Scene/Progress Bar - tag.png"));
+    m_ProgressBarFill->SetDrawable(std::make_shared<Util::Image>(base + "/Image/Scene/Progress Bar - tag.png"));
     m_ProgressBarFill->m_Transform.translation = {-580.0f, -320.0f}; // 初始在最左邊
     m_ProgressBarFill->SetZIndex(19.0f); // 層級較高，確保看得到
 
     m_WinTextObj = std::make_shared<Util::GameObject>();
-    auto winText = std::make_shared<Util::Text>("C:/Users/user/ptsd-template/Resources/Smile Delight (Demo_Font).otf", 80, "YOU WIN", Util::Color::FromRGB(255, 255, 0));
+    auto winText = std::make_shared<Util::Text>(base + "/Smile Delight (Demo_Font).otf", 80, "YOU WIN", Util::Color::FromRGB(255, 255, 0));
     m_WinTextObj->SetDrawable(winText);
     m_WinTextObj->m_Transform.translation = {0.0f, 50.0f};
     m_WinTextObj->SetZIndex(30.0f);
 
     m_NextLevelHintObj = std::make_shared<Util::GameObject>();
-    auto hintText = std::make_shared<Util::Text>("C:/Users/user/ptsd-template/Resources/Smile Delight (Demo_Font).otf", 40, "Press ENTER for Next Level", Util::Color::FromRGB(255, 255, 255));
+    auto hintText = std::make_shared<Util::Text>(base + "/Smile Delight (Demo_Font).otf", 40, "Press ENTER for Next Level", Util::Color::FromRGB(255, 255, 255));
     m_NextLevelHintObj->SetDrawable(hintText);
     m_NextLevelHintObj->m_Transform.translation = {0.0f, -50.0f};
     m_NextLevelHintObj->SetZIndex(30.0f);

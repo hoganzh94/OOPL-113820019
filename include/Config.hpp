@@ -35,13 +35,17 @@ namespace Config {
     inline constexpr int ZOMBIE_EAT_DAMAGE = 20; // 殭屍每秒造成的傷害
 
     // 路障殭屍 (Conehead)
-    inline constexpr int CONEHEAD_ARMOR_HP = 300;   // 路障額外血量
+    inline constexpr int CONEHEAD_ARMOR_HP = 180;   // 路障額外血量
     inline constexpr float CONEHEAD_SPEED = 20.0f;
     inline constexpr int CONEHEAD_ANIM_FRAMES = 7;  // 強制 7 幀
 
     // 路障受損階段閾值 (基於 370)
-    inline constexpr int CONEHEAD_STAGE1_HP = 200;  // 低於此值進入輕微損毀
-    inline constexpr int CONEHEAD_STAGE2_HP = 100;  // 低於此值進入嚴重損毀
+    inline constexpr int CONEHEAD_STAGE1_HP = 120;  // 低於此值進入輕微損毀
+    inline constexpr int CONEHEAD_STAGE2_HP = 60;  // 低於此值進入嚴重損毀
+
+    inline constexpr int BUCKETHEAD_ARMOR_HP = 500;
+    inline constexpr float BUCKETHEAD_SPEED = 20.0f;
+    inline constexpr int BUCKETHEAD_ANIM_FRAMES = 7;
 
     // --- 武器與傷害 ---
     inline constexpr int PEA_DAMAGE = 15;
@@ -61,3 +65,4 @@ namespace Config {
 }
 
 #endif
+

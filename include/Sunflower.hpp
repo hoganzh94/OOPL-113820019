@@ -13,11 +13,11 @@ public:
 
         std::vector<std::string> idlePaths;
         for (int i = 1; i <= 6; ++i)
-            idlePaths.push_back("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Sunflower/Idle/Sunflower - Idle " + std::to_string(i) + ".png");
+            idlePaths.push_back(std::string(RESOURCE_DIR) + "/Image/Plant/Sunflower/Idle/Sunflower - Idle " + std::to_string(i) + ".png");
         m_IdleAnimation = std::make_shared<Util::Animation>(idlePaths, true, 120, true);
         SetDrawable(m_IdleAnimation);
 
-        m_ProducingDrawable = std::make_shared<Util::Image>("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Sunflower/Sunflower - Produced Sun.png");
+        m_ProducingDrawable = std::make_shared<Util::Image>(std::string(RESOURCE_DIR) + "/Image/Plant/Sunflower/Sunflower - Produced Sun.png");
         m_SunTimer = static_cast<float>(rand() % 10);
     }
 

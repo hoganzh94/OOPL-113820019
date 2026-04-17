@@ -24,7 +24,7 @@ protected:
 
         if (currentAnimState != m_LastAnimState) {
             std::vector<std::string> paths;
-            std::string base = "C:/Users/user/OOPL-113820019/Resources/Image/Zombie/Flag Zombie/";
+            std::string base = std::string(RESOURCE_DIR) + "/Image/Zombie/Flag Zombie/";
             std::string folder;
             int frames = 0;
 

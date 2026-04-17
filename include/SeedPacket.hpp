@@ -6,7 +6,6 @@
 #include "Util/Input.hpp"
 #include "Util/Time.hpp"
 #include "PlantType.hpp"
-#include "Config.hpp"
 #include <vector>
 #include <string>
 
@@ -20,8 +19,7 @@ public:
         m_Transform.scale = {3.0f, 3.0f};
         SetZIndex(15.0f);
 
-        // --- 修正點 2：處理 Wallnut 路徑特殊命名問題 ---
-        std::string baseDir = "C:/Users/user/OOPL-113820019/Resources/Image/Plant/";
+        std::string baseDir = std::string(RESOURCE_DIR) + "/Image/Plant/";
         std::string folderName;
         std::string fileNamePart;
 
@@ -38,7 +36,6 @@ public:
 
         // 預載 6 幀 Loading 圖片
         for (int i = 1; i <= 6; ++i) {
-            // 格式範例：.../Wallnut/Loding/Wall-Nut - Loding 1.png
             std::string fullPath = baseDir + folderName + "/Loding/" + fileNamePart + " - Loding " + std::to_string(i) + ".png";
             m_LoadingPaths.push_back(fullPath);
         }

@@ -148,10 +148,13 @@ private:
             points = 1;
         }else
         {
-            if (m_CurrentLevel >= 3 && (rand()%100 < 25))
+            if (m_CurrentLevel >= 7 && (rand()%100 < 20))
             {
+                newZombie = std::make_shared<BucketHeadZombie>(spawnPos);
+                points = 6;
+            }else if (m_CurrentLevel >= 3 && (rand()%100 < 30)){
                 newZombie = std::make_shared<ConeHeadZombie>(spawnPos);
-                points = 2;
+                points = 3;
             }else
             {
                 newZombie = std::make_shared<NormalZombie>(spawnPos);

@@ -1,6 +1,7 @@
 #include "LevelLoader.hpp"
 #include "Util/Logger.hpp"
 
+
 // 靜態成員初始化
 std::map<int, LevelInfo> LevelLoader::m_Data;
 bool LevelLoader::m_IsInitialized = false;
@@ -8,10 +9,12 @@ bool LevelLoader::m_IsInitialized = false;
 void LevelLoader::Initialize() {
     if (m_IsInitialized) return;
 
+    std::string base = RESOURCE_DIR;
+
     // --- 版型 A：第 1 關 (1 行草坪) ---
     LevelInfo lv1;
-    lv1.bgPath = "C:/Users/user/ptsd-template/Resources/Image/Scene/Levels - Day.png";
-    lv1.lawnPath = "C:/Users/user/ptsd-template/Resources/Image/Scene/Levels - Day1.png";
+    lv1.bgPath = base + "/Image/Scene/Levels - Day.png";
+    lv1.lawnPath = base + "/Image/Scene/Levels - Day1.png";
     lv1.lawnPos = {120.0f, -5.0f};
     lv1.lawnScale = {3.1f, 3.1f};
     lv1.gridCoords = {
@@ -21,8 +24,8 @@ void LevelLoader::Initialize() {
 
     // --- 版型 B：第 2 & 3 關 (3 行草坪) ---
     LevelInfo lv3;
-    lv3.bgPath = "C:/Users/user/ptsd-template/Resources/Image/Scene/Levels - Day.png";
-    lv3.lawnPath = "C:/Users/user/ptsd-template/Resources/Image/Scene/Levels - Day2Lawn.png";
+    lv3.bgPath = base + "/Image/Scene/Levels - Day.png";
+    lv3.lawnPath = base + "/Image/Scene/Levels - Day2Lawn.png";
     lv3.lawnPos = {120.0f, -5.0f};
     lv3.lawnScale = {3.1f, 3.1f};
     lv3.gridCoords = {
@@ -35,8 +38,8 @@ void LevelLoader::Initialize() {
 
     // --- 版型 C：第 4 關到第 10 關 (標準 5 行草坪) ---
     LevelInfo lv5;
-    lv5.bgPath = "C:/Users/user/ptsd-template/Resources/Image/Scene/Levels - Day.png";
-    lv5.lawnPath = "C:/Users/user/ptsd-template/Resources/Image/Scene/Levels - DayLawn.png";
+    lv5.bgPath = base + "/Image/Scene/Levels - Day.png";
+    lv5.lawnPath = base + "/Image/Scene/Levels - DayLawn.png";
     lv5.lawnPos = {120.0f, -15.0f};
     lv5.lawnScale = {3.1f, 3.1f};
     lv5.gridCoords = {

@@ -14,7 +14,7 @@ public:
         : m_TargetPos(targetPos), m_IsFromPlant(isFromPlant) {
 
         // 修正：無論來源，產出的陽光物件統一使用躍動的 Sun.png
-        SetDrawable(std::make_shared<Util::Image>("C:/Users/user/OOPL-113820019/Resources/Image/Scene/Sun.png"));
+        SetDrawable(std::make_shared<Util::Image>(std::string(RESOURCE_DIR) + "/Image/Scene/Sun.png"));
 
         m_Transform.translation = startPos;
         m_Transform.scale = {2.0f, 2.0f};

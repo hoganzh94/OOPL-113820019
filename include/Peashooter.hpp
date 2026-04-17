@@ -72,7 +72,7 @@ private:
 
     void ApplyAnimation(AnimState state) {
         std::vector<std::string> paths;
-        std::string base = "C:/Users/user/OOPL-113820019/Resources/Image/Plant/Peashooter/";
+        std::string base = std::string(RESOURCE_DIR) + "/Image/Plant/Peashooter/";
         int frames;
         std::string folder;
 

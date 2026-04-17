@@ -66,7 +66,7 @@ protected:
 
         if (combined != m_LastAnimState) {
             std::string actStr = (action == 0) ? "Walk" : "Eat";
-            std::string base = "C:/Users/user/OOPL-113820019/Resources/Image/Zombie/ConeHead Zombie/";
+            std::string base = std::string(RESOURCE_DIR) + "/Image/Zombie/ConeHead Zombie/";
 
             // 注意：請確認資料夾名稱是否完全匹配 "Walk1", "Walk2", "Walk3"
             std::string pathPrefix = base + actStr + std::to_string(armorStage) +

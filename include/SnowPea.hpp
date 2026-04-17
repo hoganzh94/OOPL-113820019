@@ -65,7 +65,7 @@ private:
 
     void ApplyAnimation(AnimState state) {
         std::vector<std::string> paths;
-        std::string base = "C:/Users/user/OOPL-113820019/Resources/Image/Plant/Snow Pea/";
+        std::string base = std::string(RESOURCE_DIR) + "/Image/Plant/Snow Pea/";
         int frames = (state == AnimState::IDLE) ? 8 : 3;
         std::string folder = (state == AnimState::IDLE) ? "Idle/Snow Pea - Idle " : "Attack/Snow Pea - Attack ";
 

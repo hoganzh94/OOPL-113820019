@@ -23,7 +23,7 @@ private:
         if (state != m_LastState) {
             std::vector<std::string> paths;
             for (int i = 1; i <= 5; ++i)
-                paths.push_back("C:/Users/user/OOPL-113820019/Resources/Image/Plant/Wallnut/Idle" + std::to_string(state) +
+                paths.push_back(std::string(RESOURCE_DIR) + "/Image/Plant/Wallnut/Idle" + std::to_string(state) +
                                 "/Wall-Nut - Idle" + std::to_string(state) + " " + std::to_string(i) + ".png");
             SetDrawable(std::make_shared<Util::Animation>(paths, true, 120, true));
             m_LastState = state;
