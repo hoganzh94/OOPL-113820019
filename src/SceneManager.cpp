@@ -73,10 +73,22 @@ void SceneManager::InitializeResources() {
     m_NextLevelHintObj->SetDrawable(hintText);
     m_NextLevelHintObj->m_Transform.translation = {0.0f, -50.0f};
     m_NextLevelHintObj->SetZIndex(30.0f);
+
+    m_StartBanner = std::make_shared<Util::GameObject>();
+    m_StartBanner->SetZIndex(30.0f); // 確保在最上層
+    m_StartBanner->m_Transform.translation = {0.0f, 0.0f}; // 畫面中央
+    m_StartBanner->SetVisible(false);
 }
 
 void SceneManager::Update() {
     if (m_Phase != LevelPhase::DAY_LEVEL) return;
+
+    if (!m_IsBannerFinished) {
+        m_StartBannerTimer += Util::Time::GetDeltaTime();
+        // 把 m_CurrentBannerPath 傳進去
+        m_IsBannerFinished = m_UIController.UpdateStartBanner(m_StartBannerTimer, m_StartBanner, m_CurrentBannerPath);
+        return;
+    }
 
     float currentProgress = m_LevelController.GetProgress();
 
@@ -141,6 +153,7 @@ void SceneManager::EnterLevel(int level) {
     m_Renderer.AddChild(m_SunTextObj);
     m_Renderer.AddChild(m_ProgressBarBG);
     m_Renderer.AddChild(m_ProgressBarFill);
+    m_Renderer.AddChild(m_StartBanner);
 
     // --- 關鍵修正 B：卡槽初始化 ---
     if (m_PacketManager) {
@@ -158,6 +171,10 @@ void SceneManager::EnterLevel(int level) {
             m_Renderer.AddChild(mower);
         }
     }
+
+    m_StartBannerTimer = 0.0f;
+    m_IsBannerFinished = false;
+    m_CurrentBannerPath = "";
 }
 
 void SceneManager::AddPlant(PlantType type, glm::vec2 worldPos) {
@@ -185,6 +202,7 @@ void SceneManager::ClearAll() {
     m_Renderer.RemoveChild(m_NextLevelHintObj);
     m_Renderer.RemoveChild(m_ProgressBarBG);
     m_Renderer.RemoveChild(m_ProgressBarFill);
+    m_Renderer.RemoveChild(m_StartBanner);
 
     if (m_PacketManager) {
         for (auto& p : m_PacketManager->GetPackets()) m_Renderer.RemoveChild(p);

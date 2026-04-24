@@ -53,6 +53,11 @@ private:
     std::shared_ptr<SeedPacketManager> m_PacketManager;
     std::shared_ptr<SunManager> m_SunManager;
     std::shared_ptr<Util::Text> m_SunTextDrawable;
+
+    std::shared_ptr<Util::GameObject> m_StartBanner;
+    std::string m_CurrentBannerPath = "";
+    float m_StartBannerTimer = 0.0f;
+    bool m_IsBannerFinished = false;
 };
 
 #endif
