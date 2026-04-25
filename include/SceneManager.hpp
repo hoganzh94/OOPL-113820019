@@ -12,10 +12,11 @@
 #include "Util/Renderer.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Text.hpp"
+#include "SeedChooserUI.hpp"
 
 class SceneManager {
 public:
-    enum class LevelPhase { MENU, DAY_LEVEL, FAIL, WIN };
+    enum class LevelPhase { MENU, SEED_CHOOSER, DAY_LEVEL, FAIL, WIN };
 
     explicit SceneManager(Util::Renderer& renderer);
     void InitializeResources();
@@ -58,6 +59,10 @@ private:
     std::string m_CurrentBannerPath = "";
     float m_StartBannerTimer = 0.0f;
     bool m_IsBannerFinished = false;
+
+    std::vector<PlantType> m_UnlockedPlants;
+    std::vector<PlantType> m_SelectedPlants;
+    SeedChooserUI m_SeedChooserUI;
 };
 
 #endif

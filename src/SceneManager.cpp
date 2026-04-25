@@ -6,9 +6,10 @@
 #include "Util/Time.hpp"
 #include "AllPlants.hpp"
 #include "AllZombies.hpp"
+#include "spdlog/spdlog.h"
 
 SceneManager::SceneManager(Util::Renderer& renderer)
-    : m_Renderer(renderer), m_Grid(std::make_shared<Grid>()) {
+    : m_Renderer(renderer), m_Grid(std::make_shared<Grid>()), m_SeedChooserUI(renderer) {
     // 這裡只做簡單初始化，資源載入交給 InitializeResources
 }
 
@@ -78,9 +79,32 @@ void SceneManager::InitializeResources() {
     m_StartBanner->SetZIndex(30.0f); // 確保在最上層
     m_StartBanner->m_Transform.translation = {0.0f, 0.0f}; // 畫面中央
     m_StartBanner->SetVisible(false);
+
+    m_SeedChooserUI.Initialize();
 }
 
 void SceneManager::Update() {
+    if (m_Phase == LevelPhase::SEED_CHOOSER)
+    {
+        if (m_SeedChooserUI.Update())
+        {
+            m_SelectedPlants = m_SeedChooserUI.GetSelectedPlants();
+            m_SeedChooserUI.Hide();
+
+            if (m_PacketManager)
+            {
+                m_PacketManager->InitializeWith(m_SelectedPlants);
+                m_PacketManager->SetVisibleStatus(true);
+                for (auto& p : m_PacketManager->GetPackets())
+                {
+                    m_Renderer.AddChild(p);
+                }
+            }
+            m_Phase = LevelPhase::DAY_LEVEL;
+        }
+        return;
+    }
+
     if (m_Phase != LevelPhase::DAY_LEVEL) return;
 
     if (!m_IsBannerFinished) {
@@ -155,13 +179,6 @@ void SceneManager::EnterLevel(int level) {
     m_Renderer.AddChild(m_ProgressBarFill);
     m_Renderer.AddChild(m_StartBanner);
 
-    // --- 關鍵修正 B：卡槽初始化 ---
-    if (m_PacketManager) {
-        m_PacketManager->Initialize(); // 確保冷卻狀態重置
-        m_PacketManager->SetVisibleStatus(true);
-        for (auto& p : m_PacketManager->GetPackets()) m_Renderer.AddChild(p);
-    }
-
     // 建立割草機
     int rowCount = static_cast<int>(info.gridCoords.size());
     for (int i = 0; i < rowCount; ++i) {
@@ -169,6 +186,27 @@ void SceneManager::EnterLevel(int level) {
             auto mower = std::make_shared<LawnMower>(glm::vec2(-280.0f, info.gridCoords[i][0].y));
             m_World.AddMower(mower);
             m_Renderer.AddChild(mower);
+        }
+    }
+
+    if (level >= 7)
+    {
+        m_Phase = LevelPhase::SEED_CHOOSER;
+        m_UnlockedPlants = {PlantType::PEASHOOTER, PlantType::SUNFLOWER, PlantType::CHERRYBOMB, PlantType::WALLNUT, PlantType::POTATOMINE, PlantType::SNOWPEA, PlantType::CHOMPER};
+        m_SelectedPlants.clear();
+
+        if (m_PacketManager)m_PacketManager->SetVisibleStatus(false);
+        m_SeedChooserUI.Show(m_UnlockedPlants);
+    }else
+    {
+        m_Phase = LevelPhase::DAY_LEVEL;
+        m_SelectedPlants = {PlantType::PEASHOOTER, PlantType::SUNFLOWER, PlantType::CHERRYBOMB, PlantType::WALLNUT, PlantType::POTATOMINE, PlantType::SNOWPEA};
+        if (m_PacketManager)
+        {
+            m_PacketManager->Initialize();
+            m_PacketManager->SetVisibleStatus(true);
+            for (auto& p : m_PacketManager->GetPackets()){m_Renderer.AddChild(p);}
+
         }
     }
 

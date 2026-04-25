@@ -73,6 +73,8 @@ add_executable(${PROJECT_NAME}
         include/SnowPeaBullet.hpp
         include/Chomper.hpp
         include/BucketHeadZombie.hpp
+        include/SeedChooserUI.hpp
+        src/SeedChooserUI.cpp
 )
 
 if(MSVC)
