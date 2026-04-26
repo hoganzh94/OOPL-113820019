@@ -17,7 +17,7 @@ public:
         m_NormalDrawable = std::make_shared<Util::Image>(normalPath);
         SetDrawable(m_NormalDrawable);
         m_Transform.scale = {3.0f, 3.0f};
-        SetZIndex(15.0f);
+        SetZIndex(50.0f);
 
         std::string baseDir = std::string(RESOURCE_DIR) + "/Image/Plant/";
         std::string folderName;

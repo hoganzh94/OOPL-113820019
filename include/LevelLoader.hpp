@@ -1,10 +1,14 @@
 #ifndef LEVELLOADER_HPP
 #define LEVELLOADER_HPP
 
+#include <iosfwd>
 #include <string>
 #include <vector>
 #include <map>
+#include <vector>
 #include <glm/vec2.hpp>
+
+#include "PlantType.hpp"
 
 // 定義關卡資產與座標結構
 struct LevelInfo
@@ -21,6 +25,7 @@ class LevelLoader
 public:
     static void Initialize(); // 預載所有關卡資料
     static LevelInfo GetLevel(int level);
+    static std::vector<PlantType> GetUnlockedPlants(int level);
 
 private:
     static std::map<int, LevelInfo> m_Data;

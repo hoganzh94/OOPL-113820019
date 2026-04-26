@@ -20,10 +20,10 @@ void SeedChooserUI::Show(const std::vector<PlantType>& unlockedPlants) {
     m_Cards.clear();
 
     // 動態生成玩家擁有的植物卡牌
-    float startX = -400.0f;
-    float startY = -150.0f; // 備選區高度
-    float offsetX = 110.0f; // 卡牌橫向間距
-    float offsetY = -140.0f; // 換行間距
+    float startX = -200.0f;
+    float startY = -50.0f; // 備選區高度
+    float offsetX = 75.0f; // 卡牌橫向間距
+    float offsetY = -150.0f; // 換行間距
 
     for (size_t i = 0; i < unlockedPlants.size(); ++i) {
         ChooserCard card;
@@ -97,9 +97,9 @@ bool SeedChooserUI::Update() {
 
 void SeedChooserUI::UpdateCardPositions() {
     // 定義上方「出戰槽」的起始位置
-    float slotStartX = -300.0f;
+    float slotStartX = -250.0f;
     float slotY = 250.0f;
-    float slotOffsetX = 100.0f;
+    float slotOffsetX = 75.0f;
 
     // 更新每一張卡牌的位置與透明度
     for (auto& card : m_Cards) {

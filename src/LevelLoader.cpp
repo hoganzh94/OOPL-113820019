@@ -2,6 +2,7 @@
 #include "Util/Logger.hpp"
 
 
+enum class PlantType;
 // 靜態成員初始化
 std::map<int, LevelInfo> LevelLoader::m_Data;
 bool LevelLoader::m_IsInitialized = false;
@@ -69,4 +70,20 @@ LevelInfo LevelLoader::GetLevel(int level) {
         return m_Data[1];
     }
     return m_Data[level];
+}
+
+std::vector<PlantType> LevelLoader::GetUnlockedPlants(int level)
+{
+    std::vector<PlantType> unlocked;
+
+    unlocked.push_back(PlantType::PEASHOOTER);
+
+    if (level >= 2) unlocked.push_back(PlantType::SUNFLOWER);
+    if (level >= 3) unlocked.push_back(PlantType::CHERRYBOMB);
+    if (level >= 4) unlocked.push_back(PlantType::WALLNUT);
+    if (level >= 6) unlocked.push_back(PlantType::POTATOMINE);
+    if (level >= 7) unlocked.push_back(PlantType::SNOWPEA);
+    if (level >= 8) unlocked.push_back(PlantType::CHOMPER);
+
+    return unlocked;
 }

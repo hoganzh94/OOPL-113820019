@@ -100,6 +100,9 @@ void SceneManager::Update() {
                     m_Renderer.AddChild(p);
                 }
             }
+            m_StartBannerTimer = 0.0f;
+            m_IsBannerFinished = false;
+            m_CurrentBannerPath = "";
             m_Phase = LevelPhase::DAY_LEVEL;
         }
         return;
@@ -154,12 +157,34 @@ void SceneManager::EnterLevel(int level) {
     LevelLoader::Initialize();
     ClearAll(); // 清除上一關殘留
 
+    m_UnlockedPlants = LevelLoader::GetUnlockedPlants(level);
+    m_SelectedPlants.clear();
+
+    if (level >= 8)
+    {
+        m_Phase = LevelPhase::SEED_CHOOSER;
+        if (m_PacketManager) m_PacketManager->SetVisibleStatus(false);
+
+        m_SeedChooserUI.Show(m_UnlockedPlants);
+    }else
+    {
+        m_Phase = LevelPhase::DAY_LEVEL;
+
+        m_SelectedPlants = m_UnlockedPlants;
+
+        if (m_PacketManager)
+        {
+            m_PacketManager->InitializeWith(m_SelectedPlants);
+            m_PacketManager->SetVisibleStatus(true);
+            for (auto& p : m_PacketManager->GetPackets()) m_Renderer.AddChild(p);
+        }
+    }
+
     if (m_SunManager) {
         m_SunManager->Reset();           // 先清空舊太陽、重設基本狀態
         m_SunManager->InitializeLevel(level); // 再根據關卡設定 150 或 50
     }
 
-    m_Phase = LevelPhase::DAY_LEVEL;
     m_LevelController.Initialize(level, m_Grid);
 
     LevelInfo info = LevelLoader::GetLevel(level);
@@ -178,6 +203,7 @@ void SceneManager::EnterLevel(int level) {
     m_Renderer.AddChild(m_ProgressBarBG);
     m_Renderer.AddChild(m_ProgressBarFill);
     m_Renderer.AddChild(m_StartBanner);
+    m_StartBanner->SetVisible(false);
 
     // 建立割草機
     int rowCount = static_cast<int>(info.gridCoords.size());
@@ -186,27 +212,6 @@ void SceneManager::EnterLevel(int level) {
             auto mower = std::make_shared<LawnMower>(glm::vec2(-280.0f, info.gridCoords[i][0].y));
             m_World.AddMower(mower);
             m_Renderer.AddChild(mower);
-        }
-    }
-
-    if (level >= 7)
-    {
-        m_Phase = LevelPhase::SEED_CHOOSER;
-        m_UnlockedPlants = {PlantType::PEASHOOTER, PlantType::SUNFLOWER, PlantType::CHERRYBOMB, PlantType::WALLNUT, PlantType::POTATOMINE, PlantType::SNOWPEA, PlantType::CHOMPER};
-        m_SelectedPlants.clear();
-
-        if (m_PacketManager)m_PacketManager->SetVisibleStatus(false);
-        m_SeedChooserUI.Show(m_UnlockedPlants);
-    }else
-    {
-        m_Phase = LevelPhase::DAY_LEVEL;
-        m_SelectedPlants = {PlantType::PEASHOOTER, PlantType::SUNFLOWER, PlantType::CHERRYBOMB, PlantType::WALLNUT, PlantType::POTATOMINE, PlantType::SNOWPEA};
-        if (m_PacketManager)
-        {
-            m_PacketManager->Initialize();
-            m_PacketManager->SetVisibleStatus(true);
-            for (auto& p : m_PacketManager->GetPackets()){m_Renderer.AddChild(p);}
-
         }
     }
 
