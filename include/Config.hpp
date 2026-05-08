@@ -31,12 +31,12 @@ namespace Config {
 
     // --- 殭屍數值 ---
     inline constexpr int NORMAL_ZOMBIE_HP = 100;
-    inline constexpr float ZOMBIE_WALK_SPEED = 20.0f;
+    inline constexpr float ZOMBIE_WALK_SPEED = 15.0f;
     inline constexpr int ZOMBIE_EAT_DAMAGE = 20; // 殭屍每秒造成的傷害
 
     // 路障殭屍 (Conehead)
     inline constexpr int CONEHEAD_ARMOR_HP = 180;   // 路障額外血量
-    inline constexpr float CONEHEAD_SPEED = 20.0f;
+    inline constexpr float CONEHEAD_SPEED = 15.0f;
     inline constexpr int CONEHEAD_ANIM_FRAMES = 7;  // 強制 7 幀
 
     // 路障受損階段閾值 (基於 370)
@@ -60,7 +60,7 @@ namespace Config {
     inline constexpr float CHOMPER_DIGEST_TIME = 30.0f;
 
     // --- 遊戲邏輯 ---
-    inline constexpr float SUN_PRODUCE_TIME = 20.0f; // 向日葵產陽光間隔
+    inline constexpr float SUN_PRODUCE_TIME = 15.0f; // 向日葵產陽光間隔
     //inline constexpr float ZOMBIE_SPAWN_INTERVAL = 10.0f; // 殭屍生成間隔
 }
 

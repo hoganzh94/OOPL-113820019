@@ -33,7 +33,7 @@ public:
         m_Wave2Triggered = false;
 
         LoadLevelConfig(level);
-        ResetSpawnInterval();
+        m_CurrentInterval = 20.0f;
     }
 
     void Update(GameWorld& world, Util::Renderer& renderer) {
@@ -96,20 +96,35 @@ private:
     }
 
     void CheckHugeWave(GameWorld& world, Util::Renderer& renderer) {
-        // 觸發條件：當剩下的殭屍數剛好等於一大波要出的數量時 (例如 Level 1 剩下 3 隻時)
-        int remainingToSpawn = m_LevelData.totalZombies - m_SpawnedCount;
+        if (m_LevelData.hugeWaveCount == 1) {
+            // 單次大波：當生成的殭屍數量達到 (總數 - 一大波的數量) 時觸發
+            int wave1Target = m_LevelData.totalZombies - m_LevelData.wave1Zombies;
 
-        // 第一波觸發
-        if (!m_Wave1Triggered && remainingToSpawn <= m_LevelData.wave1Zombies) {
-            m_Wave1Triggered = true;
-            TriggerHugeWave(world, renderer, m_LevelData.wave1Zombies);
+            if (!m_Wave1Triggered && m_SpawnedCount >= wave1Target) {
+                m_Wave1Triggered = true;
+                TriggerHugeWave(world, renderer, m_LevelData.wave1Zombies);
+            }
         }
-        // 第二波觸發 (若該關卡有 2 次一大波)
-        else if (m_LevelData.hugeWaveCount == 2 && !m_Wave2Triggered &&
-                 m_Wave1Triggered && remainingToSpawn <= m_LevelData.wave2Zombies)
-        {
-            m_Wave2Triggered = true;
-            TriggerHugeWave(world, renderer, m_LevelData.wave2Zombies);
+        else if (m_LevelData.hugeWaveCount == 2) {
+            // 雙次大波：計算出扣除兩波大波後，剩餘的「散兵」數量
+            int normalZombies = m_LevelData.totalZombies - m_LevelData.wave1Zombies - m_LevelData.wave2Zombies;
+
+            // 第一波里程碑：散兵出一半的時候
+            int wave1Target = normalZombies / 2;
+
+            // 第二波里程碑：最後階段
+            int wave2Target = m_LevelData.totalZombies - m_LevelData.wave2Zombies;
+
+            // 觸發第一波
+            if (!m_Wave1Triggered && m_SpawnedCount >= wave1Target) {
+                m_Wave1Triggered = true;
+                TriggerHugeWave(world, renderer, m_LevelData.wave1Zombies);
+            }
+            // 觸發第二波
+            else if (!m_Wave2Triggered && m_Wave1Triggered && m_SpawnedCount >= wave2Target) {
+                m_Wave2Triggered = true;
+                TriggerHugeWave(world, renderer, m_LevelData.wave2Zombies);
+            }
         }
     }
 

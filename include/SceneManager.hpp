@@ -23,7 +23,7 @@ public:
     void SwitchToMenu();
     void EnterLevel(int level);
     void Update();
-    void AddPlant(PlantType type, glm::vec2 worldPos);
+    bool AddPlant(PlantType type, glm::vec2 worldPos);
     GameWorld& GetWorld() { return m_World; }
     [[nodiscard]] const GameWorld& GetWorld() const { return m_World; }
 
@@ -63,6 +63,14 @@ private:
     std::vector<PlantType> m_UnlockedPlants;
     std::vector<PlantType> m_SelectedPlants;
     SeedChooserUI m_SeedChooserUI;
+
+    std::shared_ptr<Util::GameObject> m_DragPlantObj;
+    PlantType m_DraggingPlantType = PlantType::NONE;
+    std::string GetPlantIdleImagePath(PlantType type);
+
+    int GetPlantCost(PlantType type);
+    glm::vec2 SnapToGrid(glm::vec2 mousePos);
+    bool m_CanPlant = false;
 };
 
 #endif

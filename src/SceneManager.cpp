@@ -81,6 +81,9 @@ void SceneManager::InitializeResources() {
     m_StartBanner->SetVisible(false);
 
     m_SeedChooserUI.Initialize();
+
+    m_DragPlantObj = std::make_shared<Util::GameObject>();
+    m_DragPlantObj->SetZIndex(90.0f);
 }
 
 void SceneManager::Update() {
@@ -110,39 +113,118 @@ void SceneManager::Update() {
 
     if (m_Phase != LevelPhase::DAY_LEVEL) return;
 
+    // --- 開場動畫檢查 ---
     if (!m_IsBannerFinished) {
         m_StartBannerTimer += Util::Time::GetDeltaTime();
-        // 把 m_CurrentBannerPath 傳進去
         m_IsBannerFinished = m_UIController.UpdateStartBanner(m_StartBannerTimer, m_StartBanner, m_CurrentBannerPath);
-        return;
+        return; // 動畫還沒播完前，遊戲時間暫停
     }
 
+    // --- UI 更新 ---
     float currentProgress = m_LevelController.GetProgress();
-
-    // 呼叫我們之前寫的 UIController 函式
     m_UIController.UpdateProgressBar(currentProgress, m_ProgressBarFill);
 
     if (m_SunManager) {
         m_SunManager->Update();
         m_UIController.UpdateSunCount(m_SunManager->GetSunCount(), m_SunTextDrawable);
     }
-    m_UIController.UpdateSunCount(m_SunManager->GetSunCount(), m_SunTextDrawable);
-    // 1. 系統更新
+
+    if (m_PacketManager) {
+        m_PacketManager->Update(); // 讓卡槽偵測滑鼠點擊
+
+        // 如果玩家剛剛點擊了一張可用的卡牌
+        if (m_PacketManager->GetSelectedType() != PlantType::NONE) {
+            // 如果原本手上已經有拿植物了，先把它從畫面上移除
+            if (m_DraggingPlantType != PlantType::NONE) {
+                m_Renderer.RemoveChild(m_DragPlantObj);
+            }
+
+            // 記錄現在拿著什麼植物
+            m_DraggingPlantType = m_PacketManager->GetSelectedType();
+
+            // 換上對應的植物圖片，並加到畫面上
+            m_DragPlantObj->SetDrawable(std::make_shared<Util::Image>(GetPlantIdleImagePath(m_DraggingPlantType)));
+            m_Renderer.AddChild(m_DragPlantObj);
+
+            // 清除卡槽的選取紀錄，避免重複觸發
+            m_PacketManager->ClearSelection();
+        }
+    }
+
+    // ==========================================
+    // ★ 狀態 A：手中已經拿著植物 (判斷種植與取消)
+    // ==========================================
+    if (m_DraggingPlantType != PlantType::NONE) {
+        // 讓植物不斷更新至目前滑鼠所在的座標
+        m_DragPlantObj->m_Transform.translation = Util::Input::GetCursorPosition();
+
+        // ★ 關鍵防連點機制：只要玩家鬆開了左鍵，才允許下一次的種植點擊
+        if (!Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
+            m_CanPlant = true;
+        }
+
+        // 偵測滑鼠右鍵 (MOUSE_RB)：取消種植
+        if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_RB)) {
+            m_DraggingPlantType = PlantType::NONE;
+            m_Renderer.RemoveChild(m_DragPlantObj);
+            m_CanPlant = false; // 取消時重置狀態
+        }
+        // 偵測滑鼠左鍵 (MOUSE_LB)：確認種植 (必須 m_CanPlant 為 true 才能種)
+        else if (m_CanPlant && Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
+            int cost = GetPlantCost(m_DraggingPlantType);
+
+            if (m_SunManager->GetSunCount() >= cost) {
+                glm::vec2 snapPos = SnapToGrid(Util::Input::GetCursorPosition());
+
+                if (AddPlant(m_DraggingPlantType, snapPos)) {
+                    m_SunManager->ConsumeSun(cost);
+
+                    if (m_PacketManager) {
+                        m_PacketManager->StartPacketCooldown(m_DraggingPlantType);
+                    }
+
+                    m_DraggingPlantType = PlantType::NONE;
+                    m_Renderer.RemoveChild(m_DragPlantObj);
+                    m_CanPlant = false; // 種植成功後重置狀態
+                } else {
+                    LOG_INFO("種植失敗：這個位子已經有植物了！");
+                }
+            } else {
+                LOG_INFO("種植失敗：陽光不足！");
+            }
+        }
+    }
+    // ==========================================
+    // ★ 狀態 B：手上是空的 (判斷是否要拿起植物)
+    // ==========================================
+    else {
+        if (m_PacketManager) {
+            m_PacketManager->Update();
+            if (m_PacketManager->GetSelectedType() != PlantType::NONE) {
+                m_DraggingPlantType = m_PacketManager->GetSelectedType();
+                m_DragPlantObj->SetDrawable(std::make_shared<Util::Image>(GetPlantIdleImagePath(m_DraggingPlantType)));
+                m_DragPlantObj->m_Transform.scale = {2.5f, 2.5f};
+                m_Renderer.AddChild(m_DragPlantObj);
+                m_PacketManager->ClearSelection();
+
+                m_CanPlant = false; // ★ 拿起的瞬間，強制鎖定種植行為，直到玩家鬆開滑鼠
+            }
+        }
+    }
+
+    // 1. 系統更新 (遊戲世界真正運轉)
     m_World.UpdateAll(m_Renderer);
     CombatSystem::Update(m_World, m_Renderer);
     m_LevelController.Update(m_World, m_Renderer);
 
-    // 2. 先清理死亡實體 (這步很重要，確保 GetZombies() 反映真實存活數)
+    // 2. 先清理死亡實體
     m_World.RemoveDeadEntities(m_Renderer);
 
-    // 3. 檢查勝利 (此時 world.GetZombies() 才是空的)
+    // 3. 檢查勝利
     if (m_LevelController.IsLevelComplete(m_World)) {
         m_Phase = LevelPhase::WIN;
-
-        // 關鍵修正：確保這兩個物件被加入渲染清單
         m_Renderer.AddChild(m_WinTextObj);
         m_Renderer.AddChild(m_NextLevelHintObj);
-
         LOG_INFO("SceneManager: Level Win! Showing UI.");
     }
 
@@ -220,16 +302,18 @@ void SceneManager::EnterLevel(int level) {
     m_CurrentBannerPath = "";
 }
 
-void SceneManager::AddPlant(PlantType type, glm::vec2 worldPos) {
+bool SceneManager::AddPlant(PlantType type, glm::vec2 worldPos) {
     for (auto& p : m_World.GetPlants()) {
-        if (glm::distance(p->m_Transform.translation, worldPos) < 10.0f) return;
+        if (glm::distance(p->m_Transform.translation, worldPos) < 10.0f) return false;
     }
     // 修復 PlantType 轉換錯誤
     auto newPlant = PlantFactory::CreatePlant(type, worldPos, m_SunManager);
     if (newPlant) {
         m_World.AddPlant(newPlant);
         m_Renderer.AddChild(newPlant);
+        return true;
     }
+    return false;
 }
 
 void SceneManager::ClearAll() {
@@ -263,4 +347,54 @@ void SceneManager::SwitchToMenu() {
     m_Renderer.AddChild(m_MenuTopRight);
     m_Renderer.AddChild(m_MenuBottomLeft);
     m_Renderer.AddChild(m_MenuBottomRight);
+}
+
+std::string SceneManager::GetPlantIdleImagePath(PlantType type)
+{
+    std::string base = std::string(RESOURCE_DIR) + "/Image/Plant/";
+    switch(type) {
+        // 請將這裡的 "Idle_1.png" 或路徑，改成你實際的植物第一幀圖片名稱
+        case PlantType::PEASHOOTER: return base + "Peashooter/Idle/Peashooter - Idle 1.png";
+        case PlantType::SUNFLOWER:  return base + "Sunflower/Idle/Sunflower - Idle 1.png";
+        case PlantType::CHERRYBOMB: return base + "Cherrybomb/Exploding/Cherry Bomb - Exploding 1.png";
+        case PlantType::WALLNUT:    return base + "Wallnut/Idle1/Wall-Nut - Idle1 1.png";
+        case PlantType::POTATOMINE: return base + "Potato mine/Idle/Potato Mine - Idle 2.png";
+        case PlantType::SNOWPEA:    return base + "Snow Pea/Idle/Snow Pea - Idle 1.png";
+        case PlantType::CHOMPER:    return base + "Chomper/Idle/Chomper - Idle 1.png";
+        default: return base + "Peashooter/Idle/Peashooter - Idle 1.png";
+    }
+}
+
+int SceneManager::GetPlantCost(PlantType type) {
+    switch(type) {
+    case PlantType::PEASHOOTER: return Config::PEASHOOTER_COST;
+    case PlantType::SUNFLOWER:  return Config::SUNFLOWER_COST;
+    case PlantType::CHERRYBOMB: return Config::CHERRYBOMB_COST;
+    case PlantType::WALLNUT:    return Config::WALLNUT_COST;
+    case PlantType::POTATOMINE: return Config::POTATOMINE_COST;
+    case PlantType::SNOWPEA:    return Config::SNOWPEA_COST;
+    case PlantType::CHOMPER:    return Config::CHOMPER_COST;
+    default: return 0;
+    }
+}
+
+glm::vec2 SceneManager::SnapToGrid(glm::vec2 mousePos) {
+    if (!m_Grid) return mousePos;
+
+    glm::vec2 closestPos = mousePos;
+    float minDistance = 9999.0f;
+
+    // 遍歷整個網格 (假設 5 行 9 列)
+    for (int r = 0; r < m_Grid->GetRows(); ++r) {
+        for (int c = 0; c < 9; ++c) {
+            glm::vec2 cellPos = m_Grid->GetWorldPos(r, c);
+            float dist = glm::distance(mousePos, cellPos);
+            // 找出距離滑鼠最近的格子中心點
+            if (dist < minDistance) {
+                minDistance = dist;
+                closestPos = cellPos;
+            }
+        }
+    }
+    return closestPos;
 }
