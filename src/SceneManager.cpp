@@ -157,6 +157,7 @@ void SceneManager::Update() {
     if (m_DraggingPlantType != PlantType::NONE) {
         // 讓植物不斷更新至目前滑鼠所在的座標
         m_DragPlantObj->m_Transform.translation = Util::Input::GetCursorPosition();
+        m_DragPlantObj->m_Transform.scale = {2.5f, 2.5f};
 
         // ★ 關鍵防連點機制：只要玩家鬆開了左鍵，才允許下一次的種植點擊
         if (!Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
@@ -203,7 +204,6 @@ void SceneManager::Update() {
             if (m_PacketManager->GetSelectedType() != PlantType::NONE) {
                 m_DraggingPlantType = m_PacketManager->GetSelectedType();
                 m_DragPlantObj->SetDrawable(std::make_shared<Util::Image>(GetPlantIdleImagePath(m_DraggingPlantType)));
-                m_DragPlantObj->m_Transform.scale = {2.5f, 2.5f};
                 m_Renderer.AddChild(m_DragPlantObj);
                 m_PacketManager->ClearSelection();
 
