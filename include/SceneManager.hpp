@@ -71,6 +71,12 @@ private:
     int GetPlantCost(PlantType type);
     glm::vec2 SnapToGrid(glm::vec2 mousePos);
     bool m_CanPlant = false;
+
+    bool m_IsShoveling = false;
+    std::shared_ptr<Util::GameObject> m_ShovelButtonObj;
+    std::shared_ptr<Util::GameObject> m_DragShovelObj;
+
+    bool RemovePlantAt(glm::vec2 targetPos);
 };
 
 #endif
