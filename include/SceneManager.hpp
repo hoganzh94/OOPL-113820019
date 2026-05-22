@@ -66,9 +66,9 @@ private:
 
     std::shared_ptr<Util::GameObject> m_DragPlantObj;
     PlantType m_DraggingPlantType = PlantType::NONE;
-    std::string GetPlantIdleImagePath(PlantType type);
+    static std::string GetPlantIdleImagePath(PlantType type);
 
-    int GetPlantCost(PlantType type);
+    static int GetPlantCost(PlantType type);
     glm::vec2 SnapToGrid(glm::vec2 mousePos);
     bool m_CanPlant = false;
 
@@ -77,6 +77,11 @@ private:
     std::shared_ptr<Util::GameObject> m_DragShovelObj;
 
     bool RemovePlantAt(glm::vec2 targetPos);
+
+    std::shared_ptr<Util::GameObject> m_PressAToStartObj;
+
+    bool m_IsPaused = false;
+    std::shared_ptr<Util::GameObject> m_PauseTextObj;
 };
 
 #endif

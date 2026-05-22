@@ -5,7 +5,6 @@
 #include "Util/Logger.hpp"
 #include "Util/Time.hpp"
 #include "AllPlants.hpp"
-#include "AllZombies.hpp"
 #include "spdlog/spdlog.h"
 
 SceneManager::SceneManager(Util::Renderer& renderer)
@@ -99,9 +98,32 @@ void SceneManager::InitializeResources() {
     m_DragShovelObj->SetZIndex(95.0f);
     m_DragShovelObj->SetVisible(false); // 預設隱藏
     m_Renderer.AddChild(m_DragShovelObj);
+
+    m_PressAToStartObj = std::make_shared<Util::GameObject>();
+    auto startTextDrawable = std::make_shared<Util::Text>(base + "/Smile Delight (Demo_Font).otf", 100, "Press A To Start", Util::Color::FromRGB(255, 255, 255));
+    m_PressAToStartObj->SetDrawable(startTextDrawable);
+    m_PressAToStartObj->m_Transform.translation = {0.0f,-150.0f};
+    m_PressAToStartObj->SetZIndex(30.0f);
+
+    m_PauseTextObj = std::make_shared<Util::GameObject>();
+    auto pauseText = std::make_shared<Util::Text>(base + "/Smile Delight (Demo_Font).otf", 80, "PAUSED", Util::Color::FromRGB(255, 0, 0));
+    m_PauseTextObj->SetDrawable(pauseText);
+    m_PauseTextObj->m_Transform.translation = {0.0f, 0.0f};
+    m_PauseTextObj->SetZIndex(30.0f);
+    m_PauseTextObj->SetVisible(false);
 }
 
 void SceneManager::Update() {
+    if (m_Phase == LevelPhase::MENU)
+    {
+        if (Util::Input::IsKeyDown(Util::Keycode::A))
+        {
+            LOG_INFO("偵測到按下A鍵，遊戲開始!進入第一關。");
+            EnterLevel(1);
+        }
+        return;
+    }
+
     if (m_Phase == LevelPhase::SEED_CHOOSER)
     {
         if (m_SeedChooserUI.Update())
@@ -134,6 +156,25 @@ void SceneManager::Update() {
         m_IsBannerFinished = m_UIController.UpdateStartBanner(m_StartBannerTimer, m_StartBanner, m_CurrentBannerPath);
         return;
     }
+
+    static bool s_PrevPBtn = false;
+    bool currPBtn = Util::Input::IsKeyDown(Util::Keycode::P);
+
+    if (currPBtn && !s_PrevPBtn)
+    {
+        m_IsPaused = !m_IsPaused;
+
+        if (m_PauseTextObj)
+        {
+            m_PauseTextObj->SetVisible(m_IsPaused);
+        }
+
+        LOG_INFO(m_IsPaused ? "Game Paused" : "Game Resumed");
+    }
+    s_PrevPBtn = currPBtn;
+
+    if (m_IsPaused) return;
+
 
     // --- UI 更新 ---
     float currentProgress = m_LevelController.GetProgress();
@@ -356,6 +397,13 @@ void SceneManager::EnterLevel(int level) {
     m_StartBannerTimer = 0.0f;
     m_IsBannerFinished = false;
     m_CurrentBannerPath = "";
+
+    m_IsPaused = false;
+    if (m_PauseTextObj)
+    {
+        m_PauseTextObj->SetVisible(false);
+        m_Renderer.AddChild(m_PauseTextObj);
+    }
 }
 
 bool SceneManager::AddPlant(PlantType type, glm::vec2 worldPos) {
@@ -376,6 +424,8 @@ void SceneManager::ClearAll() {
     m_Renderer.RemoveChild(m_MenuTopRight);
     m_Renderer.RemoveChild(m_MenuBottomLeft);
     m_Renderer.RemoveChild(m_MenuBottomRight);
+    m_Renderer.RemoveChild(m_PressAToStartObj);
+    m_Renderer.RemoveChild(m_PauseTextObj);
     m_Renderer.RemoveChild(m_GameSceneBG);
     m_Renderer.RemoveChild(m_Lawn);
     m_Renderer.RemoveChild(m_SunTextObj);
@@ -402,6 +452,8 @@ void SceneManager::SwitchToMenu() {
     m_Renderer.AddChild(m_MenuTopRight);
     m_Renderer.AddChild(m_MenuBottomLeft);
     m_Renderer.AddChild(m_MenuBottomRight);
+
+    m_Renderer.AddChild(m_PressAToStartObj);
 }
 
 std::string SceneManager::GetPlantIdleImagePath(PlantType type)
