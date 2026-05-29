@@ -82,6 +82,13 @@ private:
 
     bool m_IsPaused = false;
     std::shared_ptr<Util::GameObject> m_PauseTextObj;
+
+    void UpdateMenu();
+    void UpdateSeedChooser();
+    void UpdateDayLevel();
+    void UpdateWin();
+    void UpdateFail();
+
 };
 
 #endif

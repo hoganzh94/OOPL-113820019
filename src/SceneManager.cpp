@@ -114,43 +114,50 @@ void SceneManager::InitializeResources() {
 }
 
 void SceneManager::Update() {
-    if (m_Phase == LevelPhase::MENU)
-    {
-        if (Util::Input::IsKeyDown(Util::Keycode::A))
-        {
-            LOG_INFO("偵測到按下A鍵，遊戲開始!進入第一關。");
-            EnterLevel(1);
-        }
-        return;
+    switch (m_Phase) {
+    case LevelPhase::MENU:
+        UpdateMenu();
+        break;
+    case LevelPhase::SEED_CHOOSER:
+        UpdateSeedChooser();
+        break;
+    case LevelPhase::DAY_LEVEL:
+        UpdateDayLevel();
+        break;
+    case LevelPhase::WIN:
+        UpdateWin();
+        break;
+    case LevelPhase::FAIL:
+        UpdateFail();
+        break;
     }
+}
 
-    if (m_Phase == LevelPhase::SEED_CHOOSER)
-    {
-        if (m_SeedChooserUI.Update())
-        {
-            m_SelectedPlants = m_SeedChooserUI.GetSelectedPlants();
-            m_SeedChooserUI.Hide();
-
-            if (m_PacketManager)
-            {
-                m_PacketManager->InitializeWith(m_SelectedPlants);
-                m_PacketManager->SetVisibleStatus(true);
-                for (auto& p : m_PacketManager->GetPackets())
-                {
-                    m_Renderer.AddChild(p);
-                }
-            }
-            m_StartBannerTimer = 0.0f;
-            m_IsBannerFinished = false;
-            m_CurrentBannerPath = "";
-            m_Phase = LevelPhase::DAY_LEVEL;
-        }
-        return;
+void SceneManager::UpdateMenu() {
+    if (Util::Input::IsKeyDown(Util::Keycode::A)) {
+        LOG_INFO("偵測到按下A鍵，遊戲開始!進入第一關。");
+        EnterLevel(1);
     }
+}
 
-    if (m_Phase != LevelPhase::DAY_LEVEL) return;
+void SceneManager::UpdateSeedChooser() {
+    if (m_SeedChooserUI.Update()) {
+        m_SelectedPlants = m_SeedChooserUI.GetSelectedPlants();
+        m_SeedChooserUI.Hide();
+        if (m_PacketManager) {
+            m_PacketManager->InitializeWith(m_SelectedPlants);
+            m_PacketManager->SetVisibleStatus(true);
+            for (auto& p : m_PacketManager->GetPackets()) m_Renderer.AddChild(p);
+        }
+        m_StartBannerTimer = 0.0f;
+        m_IsBannerFinished = false;
+        m_CurrentBannerPath = "";
+        m_Phase = LevelPhase::DAY_LEVEL;
+    }
+}
 
-    // --- 開場動畫檢查 ---
+void SceneManager::UpdateDayLevel()
+{
     if (!m_IsBannerFinished) {
         m_StartBannerTimer += Util::Time::GetDeltaTime();
         m_IsBannerFinished = m_UIController.UpdateStartBanner(m_StartBannerTimer, m_StartBanner, m_CurrentBannerPath);
@@ -316,16 +323,20 @@ void SceneManager::Update() {
 
     // 2. 清理死亡實體
     m_World.RemoveDeadEntities(m_Renderer);
+}
 
-    // 3. 檢查勝利
+void SceneManager::UpdateWin()
+{
     if (m_LevelController.IsLevelComplete(m_World)) {
         m_Phase = LevelPhase::WIN;
         m_Renderer.AddChild(m_WinTextObj);
         m_Renderer.AddChild(m_NextLevelHintObj);
         LOG_INFO("SceneManager: Level Win! Showing UI.");
     }
+}
 
-    // 4. 檢查失敗
+void SceneManager::UpdateFail()
+{
     if (m_LevelController.IsGameOver()) {
         m_Phase = LevelPhase::FAIL;
         m_Renderer.AddChild(m_GameOver);
