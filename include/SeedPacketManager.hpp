@@ -13,7 +13,8 @@ public:
     void Initialize() {
         InitializeWith({
             PlantType::PEASHOOTER, PlantType::SUNFLOWER, PlantType::CHERRYBOMB,
-            PlantType::WALLNUT, PlantType::POTATOMINE, PlantType::SNOWPEA
+            PlantType::WALLNUT, PlantType::POTATOMINE, PlantType::SNOWPEA,
+            PlantType::CHOMPER, PlantType::REPEATER
         });
     }
 
@@ -36,6 +37,7 @@ public:
                 case PlantType::POTATOMINE: path += "Potato mine/Potato Mine - Image.png"; cooldown = Config::POTATOMINE_COOLDOWN; break;
                 case PlantType::SNOWPEA:    path += "Snow Pea/Snow Pea - Image.png"; cooldown = Config::SNOWPEA_COOLDOWN; break;
                 case PlantType::CHOMPER:    path += "Chomper/Chomper - Image.png"; cooldown = Config::CHOMPER_COOLDOWN; break;
+                case PlantType::REPEATER:    path += "Repeater/Repeater - Image.png"; cooldown = Config::REPEATER_COOLDOWN; break;
                 default: path += "Peashooter/Peashooter - Image.png"; cooldown = Config::PEASHOOTER_COOLDOWN; break;
             }
 

@@ -467,6 +467,7 @@ std::string SceneManager::GetPlantIdleImagePath(PlantType type)
         case PlantType::POTATOMINE: return base + "Potato mine/Idle/Potato Mine - Idle 2.png";
         case PlantType::SNOWPEA:    return base + "Snow Pea/Idle/Snow Pea - Idle 1.png";
         case PlantType::CHOMPER:    return base + "Chomper/Idle/Chomper - Idle 1.png";
+        case PlantType::REPEATER:    return base + "Repeater/Idle/Repeater - Idle 1.png";
         default: return base + "Peashooter/Idle/Peashooter - Idle 1.png";
     }
 }
@@ -480,6 +481,7 @@ int SceneManager::GetPlantCost(PlantType type) {
     case PlantType::POTATOMINE: return Config::POTATOMINE_COST;
     case PlantType::SNOWPEA:    return Config::SNOWPEA_COST;
     case PlantType::CHOMPER:    return Config::CHOMPER_COST;
+    case PlantType::REPEATER:    return Config::REPEATER_COST;
     default: return 0;
     }
 }

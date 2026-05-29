@@ -75,6 +75,7 @@ add_executable(${PROJECT_NAME}
         include/BucketHeadZombie.hpp
         include/SeedChooserUI.hpp
         src/SeedChooserUI.cpp
+        include/Repeater.hpp
 )
 
 if(MSVC)

@@ -9,7 +9,8 @@ enum class PlantType {
     WALLNUT,
     POTATOMINE,
     SNOWPEA,
-    CHOMPER
+    CHOMPER,
+    REPEATER
 };
 
 #endif

@@ -8,5 +8,6 @@
 #include "PotatoMine.hpp"
 #include "SnowPea.hpp"
 #include "Chomper.hpp"
+#include "Repeater.hpp"
 
 #endif

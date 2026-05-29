@@ -31,6 +31,7 @@ public:
             case PlantType::POTATOMINE: folderName = "Potato mine"; fileNamePart = "Potato Mine"; break;
             case PlantType::SNOWPEA:    folderName = "Snow Pea";    fileNamePart = "Snow Pea"; break;
             case PlantType::CHOMPER:    folderName = "Chomper";     fileNamePart = "Chomper";  break;
+            case PlantType::REPEATER:    folderName = "Repeater";     fileNamePart = "Repeater";  break;
             default: folderName = "Peashooter"; fileNamePart = "Peashooter"; break;
         }
 

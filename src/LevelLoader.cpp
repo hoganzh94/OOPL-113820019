@@ -84,6 +84,7 @@ std::vector<PlantType> LevelLoader::GetUnlockedPlants(int level)
     if (level >= 6) unlocked.push_back(PlantType::POTATOMINE);
     if (level >= 7) unlocked.push_back(PlantType::SNOWPEA);
     if (level >= 8) unlocked.push_back(PlantType::CHOMPER);
+    if (level >= 9) unlocked.push_back(PlantType::REPEATER);
 
     return unlocked;
 }

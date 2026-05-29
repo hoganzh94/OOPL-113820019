@@ -137,6 +137,7 @@ std::string SeedChooserUI::GetCardImagePath(PlantType type) {
         case PlantType::POTATOMINE: return base + "/Image/Plant/Potato mine/Potato Mine - Image.png";
         case PlantType::SNOWPEA:    return base + "/Image/Plant/Snow Pea/Snow Pea - Image.png";
         case PlantType::CHOMPER:    return base + "/Image/Plant/Chomper/Chomper - Image.png";
+        case PlantType::REPEATER:   return base + "/Image/Plant/Repeater/Repeater - Image.png";
         default: return base + "/Image/UI/SeedPacket_Peashooter.png"; // 預設防呆
     }
 }

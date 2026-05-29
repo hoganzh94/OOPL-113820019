@@ -29,6 +29,9 @@ std::shared_ptr<Plant> PlantFactory::CreatePlant(
     case PlantType::CHOMPER:
         return std::make_shared<Chomper>(pos);
 
+    case PlantType::REPEATER:
+        return std::make_shared<Repeater>(pos);
+
     default:
         return nullptr;
     }
