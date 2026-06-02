@@ -1,7 +1,6 @@
 #include "LevelLoader.hpp"
 #include "Util/Logger.hpp"
 
-
 enum class PlantType;
 // 靜態成員初始化
 std::map<int, LevelInfo> LevelLoader::m_Data;

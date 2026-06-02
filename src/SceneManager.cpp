@@ -6,6 +6,7 @@
 #include "Util/Time.hpp"
 #include "AllPlants.hpp"
 #include "spdlog/spdlog.h"
+#include "GameObserver.hpp"
 
 SceneManager::SceneManager(Util::Renderer& renderer)
     : m_Renderer(renderer), m_Grid(std::make_shared<Grid>()), m_SeedChooserUI(renderer) {
@@ -123,12 +124,6 @@ void SceneManager::Update() {
         break;
     case LevelPhase::DAY_LEVEL:
         UpdateDayLevel();
-        break;
-    case LevelPhase::WIN:
-        UpdateWin();
-        break;
-    case LevelPhase::FAIL:
-        UpdateFail();
         break;
     }
 }
@@ -325,24 +320,6 @@ void SceneManager::UpdateDayLevel()
     m_World.RemoveDeadEntities(m_Renderer);
 }
 
-void SceneManager::UpdateWin()
-{
-    if (m_LevelController.IsLevelComplete(m_World)) {
-        m_Phase = LevelPhase::WIN;
-        m_Renderer.AddChild(m_WinTextObj);
-        m_Renderer.AddChild(m_NextLevelHintObj);
-        LOG_INFO("SceneManager: Level Win! Showing UI.");
-    }
-}
-
-void SceneManager::UpdateFail()
-{
-    if (m_LevelController.IsGameOver()) {
-        m_Phase = LevelPhase::FAIL;
-        m_Renderer.AddChild(m_GameOver);
-    }
-}
-
 void SceneManager::EnterLevel(int level) {
     LevelLoader::Initialize();
     ClearAll();
@@ -376,6 +353,8 @@ void SceneManager::EnterLevel(int level) {
     }
 
     m_LevelController.Initialize(level, m_Grid);
+
+    m_LevelController.AddObserver(this);
 
     LevelInfo info = LevelLoader::GetLevel(level);
     m_GameSceneBG->SetDrawable(std::make_shared<Util::Image>(info.bgPath));
@@ -525,4 +504,18 @@ bool SceneManager::RemovePlantAt(glm::vec2 targetPos) {
         }
     }
     return false;
+}
+
+void SceneManager::OnNotify(GameEvent event) {
+    if (event == GameEvent::LEVEL_WIN) {
+        m_Phase = LevelPhase::WIN; // 切換狀態
+        m_Renderer.AddChild(m_WinTextObj);
+        m_Renderer.AddChild(m_NextLevelHintObj);
+        LOG_INFO("收到通知：關卡勝利！");
+    }
+    else if (event == GameEvent::LEVEL_FAIL) {
+        m_Phase = LevelPhase::FAIL; // 切換狀態
+        m_Renderer.AddChild(m_GameOver);
+        LOG_INFO("收到通知：殭屍吃掉了你的腦袋！");
+    }
 }

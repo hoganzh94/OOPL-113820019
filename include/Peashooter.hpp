@@ -92,7 +92,7 @@ private:
             paths.push_back(base + folder + std::to_string(i) + ".png");
         }
 
-        // 強制 loop = true 規避 Bug
+        // ★ 修正：退回獨立建立 Animation 的寫法，讓每棵植物擁有自己的播放進度
         auto anim = std::make_shared<Util::Animation>(paths, true, 100, true);
         SetDrawable(anim);
     }

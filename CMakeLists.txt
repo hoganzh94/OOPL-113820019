@@ -77,6 +77,7 @@ add_executable(${PROJECT_NAME}
         src/SeedChooserUI.cpp
         include/Repeater.hpp
         include/TargetingStrategy.hpp
+        include/GameObserver.hpp
 )
 
 if(MSVC)

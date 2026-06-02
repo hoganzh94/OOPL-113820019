@@ -11,6 +11,8 @@
 #include "Util/Time.hpp"
 #include "Util/Logger.hpp"
 #include "Util/Renderer.hpp"
+#include "GameObserver.hpp"
+#include <vector>
 
 class LevelController {
 public:
@@ -28,6 +30,8 @@ public:
         m_SpawnTimer = 0.0f;
         m_SpawnedCount = 0;
         m_IsGameOver = false;
+        m_HasNotifiedWin = false; 
+        m_HasNotifiedFail = false;
 
         m_Wave1Triggered = false;
         m_Wave2Triggered = false;
@@ -54,9 +58,19 @@ public:
         for (auto& z : world.GetZombies()) {
             if (z->GetX() < -300.0f) {
                 m_IsGameOver = true;
+                if (!m_HasNotifiedFail) {
+                    Notify(GameEvent::LEVEL_FAIL);
+                    m_HasNotifiedFail = true;
+                }
                 LOG_INFO("LevelController: Game Over detected.");
                 break;
             }
+        }
+
+        if (IsLevelComplete(world) && !m_HasNotifiedWin) { // ★ 確保只通知一次
+            Notify(GameEvent::LEVEL_WIN);
+            m_HasNotifiedWin = true;
+            LOG_INFO("LevelController: Level Win detected.");
         }
     }
 
@@ -76,6 +90,10 @@ public:
         if (m_LevelData.totalZombies == 0) return 0.0f;
         // 必須使用 float 強制轉型，否則 int 相除會永遠是 0 或 1
         return static_cast<float>(m_SpawnedCount) / static_cast<float>(m_LevelData.totalZombies);
+    }
+
+    void AddObserver(IGameObserver* observer) {
+        m_Observers.push_back(observer);
     }
 
 private:
@@ -193,6 +211,9 @@ private:
     bool m_Wave1Triggered, m_Wave2Triggered;
     std::shared_ptr<Grid> m_Grid;
 
+    bool m_HasNotifiedWin = false;
+    bool m_HasNotifiedFail = false;
+
     void ResetSpawnInterval()
     {
         float min = 8.0f;
@@ -200,6 +221,18 @@ private:
         m_CurrentInterval = min + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (max - min)));
 
         LOG_INFO("Next zombie will spawn in {:.2f} seconds", m_CurrentInterval);
+    }
+
+    //儲存所有訂閱這個控制器的觀察者
+    std::vector<IGameObserver*> m_Observers;
+
+    //發送通知的方法
+    void Notify(GameEvent event)
+    {
+        for (auto obs : m_Observers)
+        {
+            obs->OnNotify(event);
+        }
     }
 };
 

@@ -9,12 +9,12 @@
 #include "SunManager.hpp"
 #include "PlantType.hpp"
 #include "UIController.hpp"
-#include "Util/Renderer.hpp"
+#include "GameObserver.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Text.hpp"
 #include "SeedChooserUI.hpp"
 
-class SceneManager {
+class SceneManager : public IGameObserver {
 public:
     enum class LevelPhase { MENU, SEED_CHOOSER, DAY_LEVEL, FAIL, WIN };
 
@@ -31,6 +31,8 @@ public:
     [[nodiscard]] std::shared_ptr<Grid> GetGrid() const { return m_Grid; }
     [[nodiscard]] std::shared_ptr<SeedPacketManager> GetPacketManager() const { return m_PacketManager; }
     [[nodiscard]] std::shared_ptr<SunManager> GetSunManager() const { return m_SunManager; }
+
+    void OnNotify(GameEvent event) override;
 
 private:
     void ClearAll();
@@ -86,8 +88,6 @@ private:
     void UpdateMenu();
     void UpdateSeedChooser();
     void UpdateDayLevel();
-    void UpdateWin();
-    void UpdateFail();
 
 };
 
