@@ -30,7 +30,7 @@ public:
         m_SpawnTimer = 0.0f;
         m_SpawnedCount = 0;
         m_IsGameOver = false;
-        m_HasNotifiedWin = false; 
+        m_HasNotifiedWin = false;
         m_HasNotifiedFail = false;
 
         m_Wave1Triggered = false;

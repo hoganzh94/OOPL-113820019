@@ -91,6 +91,7 @@ void SceneManager::InitializeResources() {
     m_ShovelButtonObj->SetDrawable(std::make_shared<Util::Image>(std::string(RESOURCE_DIR) + "/Image/Scene/Shovel.png"));
     m_ShovelButtonObj->m_Transform.translation = { 480.0f, 280.0f }; // 右上角位置
     m_ShovelButtonObj->m_Transform.scale = { 2.5f, 2.5f };
+    m_ShovelButtonObj->SetVisible(false);
     m_ShovelButtonObj->SetZIndex(80.0f);
     m_Renderer.AddChild(m_ShovelButtonObj);
 
@@ -175,7 +176,20 @@ void SceneManager::UpdateDayLevel()
     }
     s_PrevPBtn = currPBtn;
 
-    if (m_IsPaused) return;
+    if (m_IsPaused)
+    {
+        if (Util::Input::IsKeyDown(Util::Keycode::M)) {
+            LOG_INFO("偵測到暫停時按下M鍵，返回主選單...");
+
+            // 恢復原本的暫停顯示狀態
+            m_IsPaused = false;
+            m_PauseTextObj->SetVisible(false);
+
+            // 執行切換回主選單的函數
+            SwitchToMenu();
+        }
+        return; // 若暫停中，以下程式碼不執行
+    }
 
 
     // --- UI 更新 ---
@@ -338,6 +352,7 @@ void SceneManager::EnterLevel(int level) {
         m_Phase = LevelPhase::DAY_LEVEL;
 
         m_SelectedPlants = m_UnlockedPlants;
+        m_ShovelButtonObj->SetVisible(true);
 
         if (m_PacketManager)
         {
@@ -444,6 +459,7 @@ void SceneManager::SwitchToMenu() {
     m_Renderer.AddChild(m_MenuBottomRight);
 
     m_Renderer.AddChild(m_PressAToStartObj);
+    m_ShovelButtonObj->SetVisible(false);
 }
 
 std::string SceneManager::GetPlantIdleImagePath(PlantType type)
